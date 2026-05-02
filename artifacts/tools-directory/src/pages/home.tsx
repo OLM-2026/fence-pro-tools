@@ -99,14 +99,14 @@ export default function Home() {
           </div>
 
           {isLoadingCategories ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {Array.from({ length: 8 }).map((_, i) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {Array.from({ length: 9 }).map((_, i) => (
                 <Skeleton key={i} className="h-24 rounded-sm" />
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {categories?.slice(0, 8).map((cat, i) => (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {categories?.map((cat, i) => (
                 <Link key={cat.id} href={`/category/${cat.slug}`} className="block group">
                   <div className="p-6 rounded-sm border bg-card hover:border-accent/50 hover:shadow-sm transition-all duration-300 flex items-center justify-between" style={{ animationDelay: `${i * 50}ms` }}>
                     <div>
