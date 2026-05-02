@@ -1,0 +1,177 @@
+Add a new category to the directory called "Branded Materials & Swag" with the following details:
+
+CATEGORY:
+- name: "Branded Materials & Swag"
+- slug: "branded-materials-swag"
+- description: "Get your fence company logo on shirts, yard signs, business cards, vehicle decals, and marketing materials. These are the easiest, most reliable services for ordering branded gear without a graphic designer."
+- icon_name: "Shirt" (from Lucide React)
+
+Add this category to the homepage featured categories grid.
+
+SEED THESE 10 TOOLS into the tools table under this category:
+
+1. Tool: 4imprint
+   - slug: 4imprint
+   - short_description: "Full-service promotional products supplier with massive catalog and free design help"
+   - long_description: "4imprint is the go-to source for branded promotional products for small businesses. Apparel, drinkware, signage, and pens — all with free art assistance. Their 360-degree guarantee means orders ship correct or they fix it free. Best for fence companies that want one trusted vendor for all branded materials."
+   - starting_price: 25.00
+   - pricing_model: "per_item"
+   - has_free_trial: false
+   - has_mobile_app: false
+   - best_for: "all"
+   - pros: ["Massive product catalog", "Free art help included", "Strong reorder system", "Reliable delivery times", "Quality guarantee"]
+   - cons: ["Higher prices than budget options", "Minimums on some items"]
+   - integrations: []
+   - affiliate_url: "https://www.4imprint.com" (placeholder until affiliate link)
+   - rating: 4.7
+   - featured: true
+
+2. Tool: Vistaprint
+   - slug: vistaprint
+   - short_description: "Affordable business cards, yard signs, flyers, and marketing print materials"
+   - long_description: "Vistaprint is the workhorse for small business print marketing. Order business cards, yard signs, postcards, brochures, and door hangers without minimums. Frequent sales make it the cheapest option for one-time print runs."
+   - starting_price: 9.99
+   - pricing_model: "per_item"
+   - has_free_trial: false
+   - has_mobile_app: true
+   - best_for: "solo"
+   - pros: ["Very low prices", "No minimums on most items", "Frequent discount codes", "Fast turnaround", "Templates for non-designers"]
+   - cons: ["Quality varies by product", "Upsells at checkout can be aggressive"]
+   - integrations: []
+   - affiliate_url: "https://www.vistaprint.com"
+   - rating: 4.3
+   - featured: true
+
+3. Tool: Custom Ink
+   - slug: custom-ink
+   - short_description: "Easy custom t-shirts and apparel with free design help and no setup fees"
+   - long_description: "Custom Ink makes it dead simple to order branded shirts, hoodies, and hats for your crew. Their online designer is the most user-friendly in the industry, and a real human reviews every order before printing. Best for fence companies that want crew uniforms without dealing with a heat press or local print shop."
+   - starting_price: 12.00
+   - pricing_model: "per_item"
+   - has_free_trial: false
+   - has_mobile_app: false
+   - best_for: "small"
+   - pros: ["Easiest design tool to use", "Free art help from real humans", "Quality guarantee", "No setup fees", "Volume discounts"]
+   - cons: ["Higher per-shirt cost than wholesale", "12+ minimum on most items"]
+   - integrations: []
+   - affiliate_url: "https://www.customink.com"
+   - rating: 4.6
+   - featured: false
+
+4. Tool: Sticker Mule
+   - slug: sticker-mule
+   - short_description: "Yard signs, vehicle magnets, decals, and stickers with fast turnaround"
+   - long_description: "Sticker Mule is the best place to order yard signs you leave at completed jobs, truck magnets for vehicles, and equipment decals. Famously fast turnaround (often under a week) and quality is consistently strong. Their pricing is straightforward with no surprise fees."
+   - starting_price: 19.00
+   - pricing_model: "per_order"
+   - has_free_trial: false
+   - has_mobile_app: false
+   - best_for: "all"
+   - pros: ["Fast turnaround", "Excellent yard sign quality", "Free shipping in US", "Simple pricing", "Strong proofing process"]
+   - cons: ["Limited apparel options", "Email marketing can be heavy"]
+   - integrations: []
+   - affiliate_url: "https://www.stickermule.com"
+   - rating: 4.8
+   - featured: true
+
+5. Tool: Bonfire
+   - slug: bonfire
+   - short_description: "Custom apparel with free design help and no inventory required"
+   - long_description: "Bonfire lets you order branded crew apparel with no upfront cost or inventory. Free design assistance and a clean ordering experience make it ideal for fence companies trying out crew uniforms for the first time."
+   - starting_price: 15.00
+   - pricing_model: "per_item"
+   - has_free_trial: false
+   - has_mobile_app: false
+   - best_for: "small"
+   - pros: ["Free design help", "No upfront inventory cost", "Good for first-time buyers", "Quality apparel options"]
+   - cons: ["Limited product range vs Custom Ink", "Pricing not always cheapest"]
+   - integrations: []
+   - affiliate_url: "https://www.bonfire.com"
+   - rating: 4.4
+   - featured: false
+
+6. Tool: UPrinting
+   - slug: uprinting
+   - short_description: "Door hangers, postcards, flyers, and direct mail print marketing"
+   - long_description: "UPrinting is the best dedicated source for door hangers, postcards, and direct mail flyers — the bread and butter of neighborhood marketing for fence companies. Strong template library and EDDM (every door direct mail) integration for postal route targeting."
+   - starting_price: 29.00
+   - pricing_model: "per_order"
+   - has_free_trial: false
+   - has_mobile_app: false
+   - best_for: "small"
+   - pros: ["Strong door hanger and EDDM options", "Good templates", "Reliable quality", "Direct mail integration"]
+   - cons: ["Website can feel overwhelming", "Shipping not always fast"]
+   - integrations: ["USPS EDDM"]
+   - affiliate_url: "https://www.uprinting.com"
+   - rating: 4.4
+   - featured: false
+
+7. Tool: Signs.com
+   - slug: signs-com
+   - short_description: "Job site signs, banners, and large format print materials"
+   - long_description: "Signs.com handles the big stuff — job site banners, large yard signs, vehicle magnets, and trade show displays. Best for fence contractors needing professional signage for active job sites or marketing at home shows."
+   - starting_price: 35.00
+   - pricing_model: "per_order"
+   - has_free_trial: false
+   - has_mobile_app: false
+   - best_for: "small"
+   - pros: ["Strong large format options", "Good for job site signage", "Quality materials", "Lifetime guarantee on certain signs"]
+   - cons: ["More expensive than budget signage", "Slower turnaround on custom"]
+   - integrations: []
+   - affiliate_url: "https://www.signs.com"
+   - rating: 4.5
+   - featured: false
+
+8. Tool: Promo Direct
+   - slug: promo-direct
+   - short_description: "Promotional products including pens, koozies, hats, and giveaway items"
+   - long_description: "Promo Direct specializes in branded giveaway items — pens, koozies, hats, water bottles, and trade show swag. Best for fence companies attending home shows, sponsoring local events, or building neighborhood goodwill with branded freebies."
+   - starting_price: 0.50
+   - pricing_model: "per_item"
+   - has_free_trial: false
+   - has_mobile_app: false
+   - best_for: "all"
+   - pros: ["Low per-unit cost on bulk", "Wide product variety", "Good for trade shows", "Volume discounts"]
+   - cons: ["Higher minimums than other vendors", "Quality varies by product line"]
+   - integrations: []
+   - affiliate_url: "https://www.promodirect.com"
+   - rating: 4.2
+   - featured: false
+
+9. Tool: DiscountMugs
+   - slug: discountmugs
+   - short_description: "Branded drinkware, hats, and apparel at competitive prices"
+   - long_description: "DiscountMugs offers branded mugs, water bottles, hats, and apparel at lower price points than premium competitors. Best for fence companies wanting branded crew gear or customer thank-you gifts on a budget."
+   - starting_price: 1.99
+   - pricing_model: "per_item"
+   - has_free_trial: false
+   - has_mobile_app: false
+   - best_for: "all"
+   - pros: ["Low prices", "Free design proofs", "Wide drinkware selection", "Good rush options"]
+   - cons: ["Quality not as consistent as Custom Ink", "Customer service mixed reviews"]
+   - integrations: []
+   - affiliate_url: "https://www.discountmugs.com"
+   - rating: 4.0
+   - featured: false
+
+10. Tool: BuildASign
+    - slug: buildasign
+    - short_description: "Yard signs, banners, and outdoor signage built for contractor use"
+    - long_description: "BuildASign focuses specifically on outdoor and contractor-grade signage — job site signs, real estate-style yard signs, and weatherproof banners. Strong choice for fence companies that need durable signage that holds up to weather over months on a job site."
+    - starting_price: 14.99
+    - pricing_model: "per_item"
+    - has_free_trial: false
+    - has_mobile_app: false
+    - best_for: "all"
+    - pros: ["Weatherproof options", "Contractor-grade durability", "Strong yard sign options", "Free design tools"]
+    - cons: ["Limited apparel", "Shipping costs add up on small orders"]
+    - integrations: []
+    - affiliate_url: "https://www.buildasign.com"
+    - rating: 4.4
+    - featured: false
+
+DESIGN NOTE FOR THIS CATEGORY:
+- Add a small disclaimer at the top of the category page: "Some links on this page are affiliate links, which means we may earn a small commission if you purchase through them — at no extra cost to you. We only list services we'd actually recommend to fence contractors."
+- This is required for FTC compliance.
+
+That's the complete addition. Generate the seed data SQL inserts and update the homepage to display this new category in the featured grid.

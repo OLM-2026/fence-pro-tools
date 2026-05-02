@@ -1,8 +1,10 @@
 import { Link } from "wouter";
 import { Hammer } from "lucide-react";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 
 export function Footer() {
   return (
+    <>
     <footer className="bg-primary text-primary-foreground border-t py-12 mt-16">
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="md:col-span-2">
@@ -26,6 +28,7 @@ export function Footer() {
           <h4 className="font-semibold mb-4 text-accent">Company</h4>
           <ul className="space-y-2 text-sm text-primary-foreground/80">
             <li><Link href="/about" className="hover:text-white transition-colors">About</Link></li>
+            <li><Link href="/disclosure" className="hover:text-white transition-colors">Affiliate Disclosure</Link></li>
           </ul>
         </div>
       </div>
@@ -33,5 +36,7 @@ export function Footer() {
         &copy; {new Date().getFullYear()} FenceProTools. All rights reserved.
       </div>
     </footer>
+    <AffiliateDisclosure variant="footer" />
+    </>
   );
 }

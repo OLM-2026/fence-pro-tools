@@ -15,6 +15,7 @@ import Submit from "@/pages/submit";
 import BlogList from "@/pages/blog";
 import BlogPostDetail from "@/pages/blog-detail";
 import About from "@/pages/about";
+import Disclosure from "@/pages/disclosure";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ function Router() {
           <Route path="/blog" component={BlogList} />
           <Route path="/blog/:slug" component={BlogPostDetail} />
           <Route path="/about" component={About} />
+          <Route path="/disclosure" component={Disclosure} />
           <Route component={NotFound} />
         </Switch>
       </main>

@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useListTools, useGetCategoryBySlug, useListCategories, getGetCategoryBySlugQueryKey } from "@workspace/api-client-react";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import { useDebounce } from "@/hooks/use-debounce";
 
 export default function Category() {
@@ -71,6 +72,10 @@ export default function Category() {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="container mx-auto px-4 pt-6">
+        <AffiliateDisclosure variant="page-top" />
       </div>
 
       <div className="container mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">

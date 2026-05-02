@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCompareTools, getCompareToolsQueryKey } from "@workspace/api-client-react";
+import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 
 export default function CompareTools() {
   const { slug1, slug2 } = useParams();
@@ -65,6 +66,10 @@ export default function CompareTools() {
             <ArrowLeft className="w-4 h-4 mr-1" /> Back to Directory
           </Link>
         </div>
+      </div>
+
+      <div className="container mx-auto px-4 pt-8">
+        <AffiliateDisclosure variant="page-top" />
       </div>
 
       <div className="container mx-auto px-4 py-12">
