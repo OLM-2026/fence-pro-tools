@@ -10,6 +10,7 @@ import Home from "@/pages/home";
 import Category from "@/pages/category";
 import Tool from "@/pages/tool";
 import CompareTools from "@/pages/compare";
+import CompareIndex from "@/pages/compare-index";
 import Submit from "@/pages/submit";
 import BlogList from "@/pages/blog";
 import BlogPostDetail from "@/pages/blog-detail";
@@ -27,6 +28,7 @@ function Router() {
           <Route path="/" component={Home} />
           <Route path="/category/:slug" component={Category} />
           <Route path="/tool/:slug" component={Tool} />
+          <Route path="/compare" component={CompareIndex} />
           <Route path="/compare/:slug1/:slug2" component={CompareTools} />
           <Route path="/submit" component={Submit} />
           <Route path="/blog" component={BlogList} />

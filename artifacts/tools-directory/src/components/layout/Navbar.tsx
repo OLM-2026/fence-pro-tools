@@ -12,6 +12,7 @@ export function Navbar() {
         </Link>
         <nav className="hidden md:flex gap-6 text-sm font-medium">
           <Link href="/" className="hover:text-accent transition-colors">Directory</Link>
+          <Link href="/compare" className="hover:text-accent transition-colors">Compare</Link>
           <Link href="/blog" className="hover:text-accent transition-colors">Resources</Link>
           <Link href="/about" className="hover:text-accent transition-colors">About</Link>
         </nav>
