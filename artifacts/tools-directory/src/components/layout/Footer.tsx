@@ -1,5 +1,4 @@
 import { Link } from "wouter";
-import { Hammer } from "lucide-react";
 import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 
 export function Footer() {
@@ -8,9 +7,8 @@ export function Footer() {
     <footer className="bg-primary text-primary-foreground border-t py-12 mt-16">
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="md:col-span-2">
-          <Link href="/" className="flex items-center gap-2 mb-4">
-            <Hammer className="h-6 w-6 text-accent" />
-            <span className="font-bold text-xl">FenceProTools</span>
+          <Link href="/" className="inline-flex mb-4">
+            <img src="/logo.png" alt="FenceProTools" className="h-14 w-auto" />
           </Link>
           <p className="text-primary-foreground/70 max-w-md text-sm leading-relaxed">
             The definitive no-BS resource for fence company owners who want to run a better business. Built by people who've actually been on a jobsite.
