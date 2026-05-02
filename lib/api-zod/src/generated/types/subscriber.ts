@@ -6,11 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface Category {
+export interface Subscriber {
   id: number;
-  name: string;
-  slug: string;
-  /** @nullable */
-  description: string | null;
-  toolCount: number;
+  email: string;
+  createdAt: string;
 }

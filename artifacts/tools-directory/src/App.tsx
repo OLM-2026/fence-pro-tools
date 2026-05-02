@@ -9,7 +9,10 @@ import { Footer } from "@/components/layout/Footer";
 import Home from "@/pages/home";
 import Category from "@/pages/category";
 import Tool from "@/pages/tool";
+import CompareTools from "@/pages/compare";
 import Submit from "@/pages/submit";
+import BlogList from "@/pages/blog";
+import BlogPostDetail from "@/pages/blog-detail";
 import About from "@/pages/about";
 import NotFound from "@/pages/not-found";
 
@@ -17,14 +20,17 @@ const queryClient = new QueryClient();
 
 function Router() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-[100dvh] bg-background text-foreground font-sans">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow flex flex-col">
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/category/:slug" component={Category} />
           <Route path="/tool/:slug" component={Tool} />
+          <Route path="/compare/:slug1/:slug2" component={CompareTools} />
           <Route path="/submit" component={Submit} />
+          <Route path="/blog" component={BlogList} />
+          <Route path="/blog/:slug" component={BlogPostDetail} />
           <Route path="/about" component={About} />
           <Route component={NotFound} />
         </Switch>

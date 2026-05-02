@@ -5,7 +5,9 @@
  * FenceProTools directory API
  * OpenAPI spec version: 0.1.0
  */
+import type { Tool } from "./tool";
 
-export interface HealthStatus {
-  status: string;
+export interface ToolComparison {
+  tool1: Tool;
+  tool2: Tool;
 }

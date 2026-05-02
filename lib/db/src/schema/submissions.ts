@@ -4,12 +4,12 @@ import { z } from "zod/v4";
 
 export const submissionsTable = pgTable("tool_submissions", {
   id: serial("id").primaryKey(),
-  name: text("name").notNull(),
-  website: text("website").notNull(),
+  companyName: text("company_name").notNull(),
+  toolName: text("tool_name").notNull(),
   category: text("category").notNull(),
-  description: text("description").notNull(),
-  submitterEmail: text("submitter_email").notNull(),
-  submitterName: text("submitter_name").notNull(),
+  website: text("website").notNull(),
+  contactEmail: text("contact_email").notNull(),
+  whyFencing: text("why_fencing").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

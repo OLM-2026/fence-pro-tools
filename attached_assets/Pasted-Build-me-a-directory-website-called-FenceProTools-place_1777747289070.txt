@@ -1,0 +1,50 @@
+Build me a directory website called FenceProTools (placeholder name) — a curated directory of software, tools, and resources specifically for fencing contractors and fence installation businesses.
+
+TARGET AUDIENCE:
+- Fencing contractors (residential and commercial)
+- Fence company owners (1-50 employees)
+- Estimators and project managers at fence companies
+- They are tradespeople first, not tech-savvy. Site needs to be simple, fast, and skimmable.
+
+PAGES NEEDED:
+
+1. Homepage
+   - Hero: "The best software and tools for running a fencing business — reviewed by people who actually know the industry"
+   - Search bar
+   - Featured categories grid (see categories below)
+   - "Top picks" section showing 6 highest-rated tools
+   - "New this week" section
+   - Email capture: "Get the weekly Fence Tool Roundup"
+
+2. Category pages (e.g., /category/estimating-software)
+   - Filterable list of tools in that category
+   - Filter options: price range, business size (solo/small/mid), features
+   - Each tool card: logo, name, 1-line description, starting price, rating, "View details" button
+
+3. Individual tool pages (e.g., /tool/arcsite)
+   - Tool name, logo, screenshot gallery
+   - Quick stats: starting price, free trial yes/no, mobile app yes/no, best for (solo/small crew/large crew)
+   - Description (2-3 paragraphs)
+   - Pros (bulleted list)
+   - Cons (bulleted list)
+   - Pricing tiers
+   - Integrations (QuickBooks, Stripe, etc.)
+   - "Visit Site" button (affiliate link)
+   - "Alternatives to consider" section linking to 3 similar tools
+
+4. Comparison pages (e.g., /compare/jobber-vs-housecall-pro)
+   - Side-by-side feature comparison
+   - Pricing comparison
+   - "Best for" recommendations
+   - Affiliate links to both
+
+5. Submit a tool page
+   - Form for software companies to request a listing
+   - Fields: company name, tool name, category, website, contact email, "tell us why fencing contractors should know about this"
+
+6. About page
+   - Brief story about why this directory exists
+   - Note that some links are affiliate links (FTC compliance)
+
+7. Blog/Resources page
+   - List of articles like

@@ -14,6 +14,12 @@ export const toolsTable = pgTable("tools", {
   affiliateUrl: text("affiliate_url"),
   logoUrl: text("logo_url"),
   featured: boolean("featured").notNull().default(false),
+  isNew: boolean("is_new").notNull().default(false),
+  freeTrial: boolean("free_trial").notNull().default(false),
+  mobileApp: boolean("mobile_app").notNull().default(false),
+  bestFor: text("best_for"),
+  integrations: text("integrations").array().notNull().default([]),
+  rating: text("rating"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

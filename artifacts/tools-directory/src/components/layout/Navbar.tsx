@@ -1,30 +1,24 @@
 import { Link } from "wouter";
+import { Hammer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="border-b bg-primary text-primary-foreground">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-primary text-primary-foreground rounded flex items-center justify-center font-bold text-xl">
-              T
-            </div>
-            <span className="font-bold text-xl hidden sm:inline-block">Tools for Home Services</span>
-          </Link>
-          <nav className="hidden md:flex gap-4">
-            <Link href="/" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              Directory
-            </Link>
-            <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-              About
-            </Link>
-          </nav>
-        </div>
+        <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+          <Hammer className="h-6 w-6 text-accent" />
+          <span>FenceProTools</span>
+        </Link>
+        <nav className="hidden md:flex gap-6 text-sm font-medium">
+          <Link href="/" className="hover:text-accent transition-colors">Directory</Link>
+          <Link href="/blog" className="hover:text-accent transition-colors">Resources</Link>
+          <Link href="/about" className="hover:text-accent transition-colors">About</Link>
+        </nav>
         <div className="flex items-center gap-4">
-          <Link href="/submit">
-            <Button variant="outline" className="hidden sm:flex">Submit a Tool</Button>
-          </Link>
+          <Button asChild variant="secondary" size="sm" className="hidden sm:flex">
+            <Link href="/submit">Submit Tool</Link>
+          </Button>
         </div>
       </div>
     </header>

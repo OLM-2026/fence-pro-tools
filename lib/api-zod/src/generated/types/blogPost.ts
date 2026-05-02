@@ -6,11 +6,13 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface Category {
+export interface BlogPost {
   id: number;
-  name: string;
+  title: string;
   slug: string;
+  excerpt: string;
+  content: string;
   /** @nullable */
-  description: string | null;
-  toolCount: number;
+  imageUrl: string | null;
+  publishedAt: string;
 }

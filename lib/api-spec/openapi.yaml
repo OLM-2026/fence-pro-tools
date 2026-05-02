@@ -3,7 +3,7 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: Tools for Home Services directory API
+  description: FenceProTools directory API
 servers:
   - url: /api
     description: Base API path
@@ -16,13 +16,16 @@ tags:
     description: Directory tools
   - name: submissions
     description: Tool submission requests
+  - name: blog
+    description: Blog and resources
+  - name: subscribers
+    description: Email subscribers
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -88,6 +91,26 @@ paths:
           required: false
           schema:
             type: boolean
+        - name: isNew
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: bestFor
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: freeTrial
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: mobileApp
+          in: query
+          required: false
+          schema:
+            type: boolean
       responses:
         "200":
           description: List of tools
@@ -113,6 +136,21 @@ paths:
                 items:
                   $ref: "#/components/schemas/Tool"
 
+  /tools/new:
+    get:
+      operationId: getNewTools
+      tags: [tools]
+      summary: Get recently added tools
+      responses:
+        "200":
+          description: New tools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tool"
+
   /tools/{slug}:
     get:
       operationId: getToolBySlug
@@ -131,6 +169,32 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tool"
+        "404":
+          description: Not found
+
+  /compare/{slug1}/{slug2}:
+    get:
+      operationId: compareTools
+      tags: [tools]
+      summary: Get two tools for side-by-side comparison
+      parameters:
+        - name: slug1
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: slug2
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Comparison data
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolComparison"
         "404":
           description: Not found
 
@@ -165,6 +229,63 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ToolSubmission"
+        "400":
+          description: Validation error
+
+  /blog:
+    get:
+      operationId: listBlogPosts
+      tags: [blog]
+      summary: List blog/resource posts
+      responses:
+        "200":
+          description: Blog posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BlogPost"
+
+  /blog/{slug}:
+    get:
+      operationId: getBlogPost
+      tags: [blog]
+      summary: Get a blog post by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Blog post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BlogPost"
+        "404":
+          description: Not found
+
+  /subscribe:
+    post:
+      operationId: subscribe
+      tags: [subscribers]
+      summary: Subscribe to email newsletter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscribeBody"
+      responses:
+        "201":
+          description: Subscribed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subscriber"
         "400":
           description: Validation error
 
@@ -227,6 +348,20 @@ components:
           type: ["string", "null"]
         featured:
           type: boolean
+        isNew:
+          type: boolean
+        freeTrial:
+          type: boolean
+        mobileApp:
+          type: boolean
+        bestFor:
+          type: ["string", "null"]
+        integrations:
+          type: array
+          items:
+            type: string
+        rating:
+          type: ["string", "null"]
         createdAt:
           type: string
       required:
@@ -241,7 +376,24 @@ components:
         - affiliateUrl
         - logoUrl
         - featured
+        - isNew
+        - freeTrial
+        - mobileApp
+        - bestFor
+        - integrations
+        - rating
         - createdAt
+
+    ToolComparison:
+      type: object
+      properties:
+        tool1:
+          $ref: "#/components/schemas/Tool"
+        tool2:
+          $ref: "#/components/schemas/Tool"
+      required:
+        - tool1
+        - tool2
 
     DirectoryStats:
       type: object
@@ -273,51 +425,99 @@ components:
     SubmitToolBody:
       type: object
       properties:
-        name:
+        companyName:
           type: string
-        website:
+        toolName:
           type: string
         category:
           type: string
-        description:
+        website:
           type: string
-        submitterEmail:
+        contactEmail:
           type: string
-        submitterName:
+        whyFencing:
           type: string
       required:
-        - name
-        - website
+        - companyName
+        - toolName
         - category
-        - description
-        - submitterEmail
-        - submitterName
+        - website
+        - contactEmail
+        - whyFencing
 
     ToolSubmission:
       type: object
       properties:
         id:
           type: integer
-        name:
+        companyName:
           type: string
-        website:
+        toolName:
           type: string
         category:
           type: string
-        description:
+        website:
           type: string
-        submitterEmail:
+        contactEmail:
           type: string
-        submitterName:
+        whyFencing:
           type: string
         createdAt:
           type: string
       required:
         - id
-        - name
-        - website
+        - companyName
+        - toolName
         - category
-        - description
-        - submitterEmail
-        - submitterName
+        - website
+        - contactEmail
+        - whyFencing
+        - createdAt
+
+    BlogPost:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        publishedAt:
+          type: string
+      required:
+        - id
+        - title
+        - slug
+        - excerpt
+        - content
+        - imageUrl
+        - publishedAt
+
+    SubscribeBody:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+        - email
+
+    Subscriber:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - email
         - createdAt
