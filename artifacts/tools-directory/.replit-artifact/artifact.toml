@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Tools for Home Services"
+version = "1.0.0"
+id = "artifacts/tools-directory"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25965
+
+[services.development]
+run = "pnpm --filter @workspace/tools-directory run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/tools-directory", "run", "build" ]
+publicDir = "artifacts/tools-directory/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25965"
+BASE_PATH = "/"

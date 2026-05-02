@@ -3,13 +3,19 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Tools for Home Services directory API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: categories
+    description: Tool categories
+  - name: tools
+    description: Directory tools
+  - name: submissions
+    description: Tool submission requests
 paths:
   /healthz:
     get:
@@ -24,6 +30,144 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /categories:
+    get:
+      operationId: listCategories
+      tags: [categories]
+      summary: List all categories
+      responses:
+        "200":
+          description: List of categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+  /categories/{slug}:
+    get:
+      operationId: getCategoryBySlug
+      tags: [categories]
+      summary: Get category by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Category detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "404":
+          description: Not found
+
+  /tools:
+    get:
+      operationId: listTools
+      tags: [tools]
+      summary: List tools with optional filters
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: search
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: featured
+          in: query
+          required: false
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of tools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tool"
+
+  /tools/featured:
+    get:
+      operationId: getFeaturedTools
+      tags: [tools]
+      summary: Get top featured tools (max 6)
+      responses:
+        "200":
+          description: Featured tools
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tool"
+
+  /tools/{slug}:
+    get:
+      operationId: getToolBySlug
+      tags: [tools]
+      summary: Get tool detail by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Tool detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tool"
+        "404":
+          description: Not found
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [tools]
+      summary: Directory summary stats
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DirectoryStats"
+
+  /submissions:
+    post:
+      operationId: submitTool
+      tags: [submissions]
+      summary: Submit a tool for listing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubmitToolBody"
+      responses:
+        "201":
+          description: Submission received
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToolSubmission"
+        "400":
+          description: Validation error
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +178,146 @@ components:
       required:
         - status
 
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        description:
+          type: ["string", "null"]
+        toolCount:
+          type: integer
+      required:
+        - id
+        - name
+        - slug
+        - description
+        - toolCount
+
+    Tool:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        slug:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        pricingStartsAt:
+          type: ["string", "null"]
+        pros:
+          type: array
+          items:
+            type: string
+        cons:
+          type: array
+          items:
+            type: string
+        affiliateUrl:
+          type: ["string", "null"]
+        logoUrl:
+          type: ["string", "null"]
+        featured:
+          type: boolean
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - slug
+        - category
+        - description
+        - pricingStartsAt
+        - pros
+        - cons
+        - affiliateUrl
+        - logoUrl
+        - featured
+        - createdAt
+
+    DirectoryStats:
+      type: object
+      properties:
+        totalTools:
+          type: integer
+        totalCategories:
+          type: integer
+        featuredTools:
+          type: integer
+        categoryBreakdown:
+          type: array
+          items:
+            type: object
+            properties:
+              category:
+                type: string
+              count:
+                type: integer
+            required:
+              - category
+              - count
+      required:
+        - totalTools
+        - totalCategories
+        - featuredTools
+        - categoryBreakdown
+
+    SubmitToolBody:
+      type: object
+      properties:
+        name:
+          type: string
+        website:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        submitterEmail:
+          type: string
+        submitterName:
+          type: string
+      required:
+        - name
+        - website
+        - category
+        - description
+        - submitterEmail
+        - submitterName
+
+    ToolSubmission:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        website:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        submitterEmail:
+          type: string
+        submitterName:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - website
+        - category
+        - description
+        - submitterEmail
+        - submitterName
+        - createdAt
