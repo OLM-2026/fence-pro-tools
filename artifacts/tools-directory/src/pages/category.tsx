@@ -73,10 +73,10 @@ export default function Category() {
     ? "All Fencing Contractor Software Tools"
     : SEO_H1[dbSlug] ?? `Best ${category?.name ?? ""} Software for Fence Companies`;
   const seoTitle = isAll
-    ? "All Fencing Contractor Software — Pro Fence Tools Directory"
-    : `${seoH1} (${new Date().getFullYear()}) — Pro Fence Tools`;
+    ? "All Fencing Contractor Software | Pro Fence Tools Directory"
+    : `${seoH1} (${new Date().getFullYear()}) | Pro Fence Tools`;
   const seoDescription = isAll
-    ? `Browse all ${tools?.length ?? 22} software tools reviewed for fencing contractors — estimating, CRM, scheduling, invoicing, marketing, and more. Independent, no paid placements.`
+    ? `Browse all ${tools?.length ?? 22} software tools reviewed for fencing contractors: estimating, CRM, scheduling, invoicing, marketing, and more. Independent, no paid placements.`
     : `Compare the top ${tools?.length ?? ""} ${category?.name ?? ""} software options for fencing contractors. Independent reviews, pricing, pros/cons, and a clear recommendation. No paid placements.`;
 
   // JSON-LD ItemList schema
@@ -293,7 +293,7 @@ export default function Category() {
                   Not sure which one to pick?
                 </p>
                 <p className="text-sm text-gray-600">
-                  Compare any two {category?.name ?? "software"} tools side-by-side — pricing, features, free trial, mobile app, and a clear winner recommendation.
+                  Compare two or three {category?.name ?? "software"} tools side by side: pricing, features, free trial, mobile app, and a clear winner recommendation.
                 </p>
               </div>
               <Link href="/compare">

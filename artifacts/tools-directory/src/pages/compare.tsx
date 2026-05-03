@@ -4,7 +4,7 @@ import { ArrowLeft, Check, Minus, ExternalLink, Trophy, Star } from "lucide-reac
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useCompareTools, getCompareToolsQueryKey } from "@workspace/api-client-react";
+import { useCompareTools, getCompareToolsQueryKey, useGetToolBySlug, getGetToolBySlugQueryKey } from "@workspace/api-client-react";
 import AffiliateDisclosure from "@/components/AffiliateDisclosure";
 import { categoryUrl } from "@/lib/seo-slugs";
 import type { Tool } from "@workspace/api-client-react";
@@ -42,6 +42,15 @@ function supportScore(tool: Tool): number {
   return Math.min(5, 3 + intCount * 0.2);
 }
 
+function totalScore(tool: Tool): number {
+  return (
+    parsePriceScore(tool.pricingStartsAt) +
+    easeScore(tool) +
+    featuresScore(tool) +
+    supportScore(tool)
+  ) / 4;
+}
+
 function Stars({ score }: { score: number }) {
   const full = Math.floor(score);
   const half = score - full >= 0.4;
@@ -64,31 +73,68 @@ function Stars({ score }: { score: number }) {
   );
 }
 
-type ScoreDimension = { label: string; score1: number; score2: number };
+type ScoreDimension = {
+  label: string;
+  scores: number[];
+};
 
-function winner(s1: number, s2: number): "left" | "right" | "tie" {
-  if (Math.abs(s1 - s2) < 0.15) return "tie";
-  return s1 > s2 ? "left" : "right";
+function winnerIdx(scores: number[]): number | null {
+  const max = Math.max(...scores);
+  const maxCount = scores.filter((s) => Math.abs(s - max) < 0.15).length;
+  if (maxCount > 1) return null;
+  return scores.findIndex((s) => Math.abs(s - max) < 0.15);
+}
+
+/* ── Tool header cell ── */
+function ToolHeader({ tool }: { tool: Tool }) {
+  return (
+    <div className="flex flex-col items-start gap-3">
+      {tool.logoUrl && (
+        <div className="h-10 w-full flex items-center">
+          <img src={tool.logoUrl} alt={tool.name} className="max-h-full object-contain" />
+        </div>
+      )}
+      <h2 className="text-xl font-bold">{tool.name}</h2>
+      <a
+        href={tool.affiliateUrl ?? "#"}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1.5 bg-[#0d1f3c] hover:bg-[#0d1f3c]/90 text-white text-sm font-bold px-4 py-2 rounded-sm transition-colors"
+      >
+        Visit {tool.name} <ExternalLink className="w-3.5 h-3.5" />
+      </a>
+    </div>
+  );
 }
 
 export default function CompareTools() {
-  const { slug1, slug2 } = useParams();
+  const { slug1, slug2, slug3 } = useParams<{ slug1?: string; slug2?: string; slug3?: string }>();
 
-  const { data, isLoading } = useCompareTools(slug1 || "", slug2 || "", {
+  const { data, isLoading: isLoading12 } = useCompareTools(slug1 || "", slug2 || "", {
     query: {
       enabled: !!(slug1 && slug2),
       queryKey: getCompareToolsQueryKey(slug1 || "", slug2 || ""),
     },
   });
 
+  const { data: tool3Data, isLoading: isLoading3 } = useGetToolBySlug(slug3 || "", {
+    query: {
+      enabled: !!slug3,
+      queryKey: getGetToolBySlugQueryKey(slug3 || ""),
+    },
+  });
+
+  const isLoading = isLoading12 || (!!slug3 && isLoading3);
+
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-12">
         <Skeleton className="h-8 w-48 mb-12" />
-        <div className="grid grid-cols-3 gap-6">
+        <div className="grid grid-cols-4 gap-6">
           <Skeleton className="h-96 w-full" />
           <Skeleton className="h-96 w-full" />
           <Skeleton className="h-96 w-full" />
+          {slug3 && <Skeleton className="h-96 w-full" />}
         </div>
       </div>
     );
@@ -105,40 +151,45 @@ export default function CompareTools() {
     );
   }
 
-  const { tool1, tool2 } = data;
+  const tool1 = data.tool1 as Tool;
+  const tool2 = data.tool2 as Tool;
+  const tool3 = tool3Data as Tool | undefined;
 
-  // Compute scores
+  const tools: Tool[] = [tool1, tool2, ...(tool3 ? [tool3] : [])];
+  const colCount = tools.length; // 2 or 3
+
   const scores: ScoreDimension[] = [
-    { label: "Price / Value", score1: parsePriceScore(tool1.pricingStartsAt), score2: parsePriceScore(tool2.pricingStartsAt) },
-    { label: "Ease of Use", score1: easeScore(tool1 as Tool), score2: easeScore(tool2 as Tool) },
-    { label: "Features", score1: featuresScore(tool1 as Tool), score2: featuresScore(tool2 as Tool) },
-    { label: "Integrations & Support", score1: supportScore(tool1 as Tool), score2: supportScore(tool2 as Tool) },
+    { label: "Price / Value", scores: tools.map((t) => parsePriceScore(t.pricingStartsAt)) },
+    { label: "Ease of Use", scores: tools.map(easeScore) },
+    { label: "Features", scores: tools.map(featuresScore) },
+    { label: "Integrations and Support", scores: tools.map(supportScore) },
   ];
 
-  const totalScore1 = scores.reduce((a, s) => a + s.score1, 0) / scores.length;
-  const totalScore2 = scores.reduce((a, s) => a + s.score2, 0) / scores.length;
-  const overallWinner = winner(totalScore1, totalScore2);
-  const recommendedTool = overallWinner === "left" ? tool1 : overallWinner === "right" ? tool2 : null;
+  const overallScores = tools.map(totalScore);
+  const overallWinnerIdx = winnerIdx(overallScores);
+  const recommendedTool = overallWinnerIdx !== null ? tools[overallWinnerIdx] : null;
 
-  // Boolean feature rows
   const featureRows = [
-    { label: "Free Trial", v1: tool1.freeTrial, v2: tool2.freeTrial },
-    { label: "Mobile App", v1: tool1.mobileApp, v2: tool2.mobileApp },
+    { label: "Free Trial", vals: tools.map((t) => t.freeTrial) },
+    { label: "Mobile App", vals: tools.map((t) => t.mobileApp) },
   ];
+
+  const titleNames = tools.map((t) => t.name).join(" vs ");
+  const colWidth = colCount === 3 ? "w-[28%]" : "w-[37.5%]";
 
   return (
     <div className="animate-in fade-in duration-500 pb-20">
       <Helmet>
-        <title>{tool1.name} vs {tool2.name} for Fence Companies — Side-by-Side Comparison | Pro Fence Tools</title>
-        <meta name="description" content={`${tool1.name} vs ${tool2.name}: Which is better for fencing contractors? Side-by-side comparison of pricing, ease of use, features, and support. Independent, no sponsored results.`} />
-        <meta property="og:title" content={`${tool1.name} vs ${tool2.name} — Fence Company Software Comparison`} />
-        <meta property="og:description" content={`Compare ${tool1.name} and ${tool2.name} side-by-side for fencing contractors. Scored on price, ease of use, features, and support with a clear recommendation.`} />
+        <title>{titleNames} for Fence Companies: Side-by-Side Comparison | Pro Fence Tools</title>
+        <meta name="description" content={`${titleNames}: Which is better for fencing contractors? Side-by-side comparison of pricing, ease of use, features, and support. Independent, no sponsored results.`} />
+        <meta property="og:title" content={`${titleNames}: Fence Company Software Comparison`} />
+        <meta property="og:description" content={`Compare ${titleNames} side by side for fencing contractors. Scored on price, ease of use, features, and support with a clear recommendation.`} />
         <meta name="robots" content="index, follow" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Article",
-          "headline": `${tool1.name} vs ${tool2.name} for Fencing Contractors (${new Date().getFullYear()})`,
-          "description": `Independent comparison of ${tool1.name} and ${tool2.name} for fence company owners. Scored on price/value, ease of use, features, and integrations/support.`,
+          "headline": `${titleNames} for Fencing Contractors (${new Date().getFullYear()})`,
+          "description": `Independent comparison of ${titleNames} for fence company owners. Scored on price/value, ease of use, features, and integrations/support.`,
           "author": { "@type": "Organization", "name": "Pro Fence Tools" },
           "publisher": { "@type": "Organization", "name": "Pro Fence Tools" },
           "dateModified": new Date().toISOString().split("T")[0],
@@ -164,12 +215,15 @@ export default function CompareTools() {
           className="text-4xl md:text-5xl font-extrabold tracking-tight text-center mb-2"
           style={{ fontFamily: "var(--app-font-display)" }}
         >
-          {tool1.name}{" "}
-          <span className="text-muted-foreground font-normal text-3xl">vs</span>{" "}
-          {tool2.name}
+          {tools.map((t, i) => (
+            <span key={t.id}>
+              {i > 0 && <span className="text-muted-foreground font-normal text-3xl mx-2">vs</span>}
+              {t.name}
+            </span>
+          ))}
         </h1>
         <p className="text-center text-muted-foreground mb-10 font-medium">
-          For fencing contractors — scored on price, ease of use, features, and support.
+          For fencing contractors, scored on price, ease of use, features, and support.
         </p>
 
         {/* Winner callout */}
@@ -183,7 +237,7 @@ export default function CompareTools() {
               {recommendedTool.name}
             </h2>
             <p className="text-white/60 text-sm mb-4">
-              Scored higher on overall value, ease of use, and features for fencing workflows.
+              Scored highest on overall value, ease of use, and features for fencing workflows.
             </p>
             <a
               href={recommendedTool.affiliateUrl ?? "#"}
@@ -196,99 +250,69 @@ export default function CompareTools() {
           </div>
         )}
 
-        {/* ── SCORED COMPARISON TABLE ── */}
+        {/* ── COMPARISON TABLE ── */}
         <div className="border-2 rounded-sm bg-card shadow-sm overflow-x-auto mb-10">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b-2">
                 <th className="p-5 bg-muted/50 w-1/4 text-xs font-bold uppercase tracking-wider text-muted-foreground" />
-                <th className="p-5 border-l-2 w-[37.5%]">
-                  <div className="flex flex-col items-start gap-3">
-                    {tool1.logoUrl && (
-                      <div className="h-10 w-full flex items-center">
-                        <img src={tool1.logoUrl} alt={tool1.name} className="max-h-full object-contain" />
-                      </div>
-                    )}
-                    <h2 className="text-xl font-bold">{tool1.name}</h2>
-                    <a
-                      href={tool1.affiliateUrl ?? "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 bg-[#0d1f3c] hover:bg-[#0d1f3c]/90 text-white text-sm font-bold px-4 py-2 rounded-sm transition-colors"
-                    >
-                      Visit {tool1.name} <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </th>
-                <th className="p-5 border-l-2 w-[37.5%]">
-                  <div className="flex flex-col items-start gap-3">
-                    {tool2.logoUrl && (
-                      <div className="h-10 w-full flex items-center">
-                        <img src={tool2.logoUrl} alt={tool2.name} className="max-h-full object-contain" />
-                      </div>
-                    )}
-                    <h2 className="text-xl font-bold">{tool2.name}</h2>
-                    <a
-                      href={tool2.affiliateUrl ?? "#"}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 bg-[#0d1f3c] hover:bg-[#0d1f3c]/90 text-white text-sm font-bold px-4 py-2 rounded-sm transition-colors"
-                    >
-                      Visit {tool2.name} <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </th>
+                {tools.map((tool) => (
+                  <th key={tool.id} className={`p-5 border-l-2 ${colWidth}`}>
+                    <ToolHeader tool={tool} />
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody className="text-sm font-medium">
-              {/* Pricing row */}
+              {/* Starting Price */}
               <tr className="border-b bg-muted/10">
                 <td className="p-4 font-bold text-muted-foreground uppercase tracking-wider text-xs">Starting Price</td>
-                <td className="p-4 border-l-2 font-bold text-base">{tool1.pricingStartsAt || "Contact Sales"}</td>
-                <td className="p-4 border-l-2 font-bold text-base">{tool2.pricingStartsAt || "Contact Sales"}</td>
-              </tr>
-              <tr className="border-b">
-                <td className="p-4 font-bold text-muted-foreground uppercase tracking-wider text-xs">Best For</td>
-                <td className="p-4 border-l-2">{tool1.bestFor || "All sizes"}</td>
-                <td className="p-4 border-l-2">{tool2.bestFor || "All sizes"}</td>
+                {tools.map((t) => (
+                  <td key={t.id} className="p-4 border-l-2 font-bold text-base">{t.pricingStartsAt || "Contact Sales"}</td>
+                ))}
               </tr>
 
-              {/* Boolean features */}
+              {/* Best For */}
+              <tr className="border-b">
+                <td className="p-4 font-bold text-muted-foreground uppercase tracking-wider text-xs">Best For</td>
+                {tools.map((t) => (
+                  <td key={t.id} className="p-4 border-l-2">{t.bestFor || "All sizes"}</td>
+                ))}
+              </tr>
+
+              {/* Boolean feature rows */}
               {featureRows.map((row) => (
                 <tr key={row.label} className="border-b bg-muted/5">
                   <td className="p-4 font-bold text-muted-foreground uppercase tracking-wider text-xs">{row.label}</td>
-                  <td className="p-4 border-l-2">
-                    {row.v1 ? <Check className="w-5 h-5 text-green-600" /> : <Minus className="w-5 h-5 text-muted-foreground/40" />}
-                  </td>
-                  <td className="p-4 border-l-2">
-                    {row.v2 ? <Check className="w-5 h-5 text-green-600" /> : <Minus className="w-5 h-5 text-muted-foreground/40" />}
-                  </td>
+                  {row.vals.map((v, i) => (
+                    <td key={i} className="p-4 border-l-2">
+                      {v ? <Check className="w-5 h-5 text-green-600" /> : <Minus className="w-5 h-5 text-muted-foreground/40" />}
+                    </td>
+                  ))}
                 </tr>
               ))}
 
-              {/* ── SCORED ROWS ── */}
+              {/* Scored criteria header */}
               <tr className="border-b-2 border-t-2 bg-[#0d1f3c]/5">
-                <td colSpan={3} className="p-3 text-xs font-black uppercase tracking-widest text-[#0d1f3c] text-center">
-                  Scored criteria — Pro Fence Tools independent assessment
+                <td colSpan={tools.length + 1} className="p-3 text-xs font-black uppercase tracking-widest text-[#0d1f3c] text-center">
+                  Scored criteria -- Pro Fence Tools independent assessment
                 </td>
               </tr>
+
+              {/* Scored rows */}
               {scores.map((s) => {
-                const w = winner(s.score1, s.score2);
+                const wi = winnerIdx(s.scores);
                 return (
                   <tr key={s.label} className="border-b">
                     <td className="p-4 font-bold text-muted-foreground uppercase tracking-wider text-xs align-middle">{s.label}</td>
-                    <td className={`p-4 border-l-2 ${w === "left" ? "bg-[#f5a623]/5" : ""}`}>
-                      <div className="flex items-center gap-2">
-                        <Stars score={s.score1} />
-                        {w === "left" && <Trophy className="w-3.5 h-3.5 text-[#f5a623]" />}
-                      </div>
-                    </td>
-                    <td className={`p-4 border-l-2 ${w === "right" ? "bg-[#f5a623]/5" : ""}`}>
-                      <div className="flex items-center gap-2">
-                        <Stars score={s.score2} />
-                        {w === "right" && <Trophy className="w-3.5 h-3.5 text-[#f5a623]" />}
-                      </div>
-                    </td>
+                    {s.scores.map((sc, i) => (
+                      <td key={i} className={`p-4 border-l-2 ${wi === i ? "bg-[#f5a623]/5" : ""}`}>
+                        <div className="flex items-center gap-2">
+                          <Stars score={sc} />
+                          {wi === i && <Trophy className="w-3.5 h-3.5 text-[#f5a623]" />}
+                        </div>
+                      </td>
+                    ))}
                   </tr>
                 );
               })}
@@ -296,79 +320,58 @@ export default function CompareTools() {
               {/* Overall score */}
               <tr className="border-b-2 bg-muted/20 font-bold">
                 <td className="p-4 text-xs font-black uppercase tracking-wider">Overall Score</td>
-                <td className={`p-4 border-l-2 ${overallWinner === "left" ? "bg-[#f5a623]/10" : ""}`}>
-                  <div className="flex items-center gap-2">
-                    <Stars score={totalScore1} />
-                    {overallWinner === "left" && (
-                      <span className="text-[10px] font-black bg-[#f5a623] text-[#0d1f3c] px-1.5 py-0.5 rounded-sm uppercase tracking-wide">Winner</span>
-                    )}
-                  </div>
-                </td>
-                <td className={`p-4 border-l-2 ${overallWinner === "right" ? "bg-[#f5a623]/10" : ""}`}>
-                  <div className="flex items-center gap-2">
-                    <Stars score={totalScore2} />
-                    {overallWinner === "right" && (
-                      <span className="text-[10px] font-black bg-[#f5a623] text-[#0d1f3c] px-1.5 py-0.5 rounded-sm uppercase tracking-wide">Winner</span>
-                    )}
-                  </div>
-                </td>
+                {overallScores.map((sc, i) => (
+                  <td key={i} className={`p-4 border-l-2 ${overallWinnerIdx === i ? "bg-[#f5a623]/10" : ""}`}>
+                    <div className="flex items-center gap-2">
+                      <Stars score={sc} />
+                      {overallWinnerIdx === i && (
+                        <span className="text-[10px] font-black bg-[#f5a623] text-[#0d1f3c] px-1.5 py-0.5 rounded-sm uppercase tracking-wide">Winner</span>
+                      )}
+                    </div>
+                  </td>
+                ))}
               </tr>
 
               {/* Pros */}
               <tr className="border-b">
                 <td className="p-4 font-bold text-muted-foreground uppercase tracking-wider text-xs align-top">Pros</td>
-                <td className="p-4 border-l-2 align-top">
-                  <ul className="space-y-2">
-                    {tool1.pros?.map((pro, i) => (
-                      <li key={i} className="flex gap-2 text-sm"><Check className="w-4 h-4 text-green-600 shrink-0 mt-0.5" /> <span>{pro}</span></li>
-                    ))}
-                  </ul>
-                </td>
-                <td className="p-4 border-l-2 align-top">
-                  <ul className="space-y-2">
-                    {tool2.pros?.map((pro, i) => (
-                      <li key={i} className="flex gap-2 text-sm"><Check className="w-4 h-4 text-green-600 shrink-0 mt-0.5" /> <span>{pro}</span></li>
-                    ))}
-                  </ul>
-                </td>
+                {tools.map((t) => (
+                  <td key={t.id} className="p-4 border-l-2 align-top">
+                    <ul className="space-y-2">
+                      {t.pros?.map((pro, i) => (
+                        <li key={i} className="flex gap-2 text-sm"><Check className="w-4 h-4 text-green-600 shrink-0 mt-0.5" /> <span>{pro}</span></li>
+                      ))}
+                    </ul>
+                  </td>
+                ))}
               </tr>
 
               {/* Cons */}
               <tr className="border-b">
                 <td className="p-4 font-bold text-muted-foreground uppercase tracking-wider text-xs align-top">Cons</td>
-                <td className="p-4 border-l-2 align-top">
-                  <ul className="space-y-2">
-                    {tool1.cons?.map((con, i) => (
-                      <li key={i} className="flex gap-2 text-sm"><Minus className="w-4 h-4 text-red-500 shrink-0 mt-0.5" /> <span>{con}</span></li>
-                    ))}
-                  </ul>
-                </td>
-                <td className="p-4 border-l-2 align-top">
-                  <ul className="space-y-2">
-                    {tool2.cons?.map((con, i) => (
-                      <li key={i} className="flex gap-2 text-sm"><Minus className="w-4 h-4 text-red-500 shrink-0 mt-0.5" /> <span>{con}</span></li>
-                    ))}
-                  </ul>
-                </td>
+                {tools.map((t) => (
+                  <td key={t.id} className="p-4 border-l-2 align-top">
+                    <ul className="space-y-2">
+                      {t.cons?.map((con, i) => (
+                        <li key={i} className="flex gap-2 text-sm"><Minus className="w-4 h-4 text-red-500 shrink-0 mt-0.5" /> <span>{con}</span></li>
+                      ))}
+                    </ul>
+                  </td>
+                ))}
               </tr>
 
               {/* Integrations */}
               <tr>
                 <td className="p-4 font-bold text-muted-foreground uppercase tracking-wider text-xs align-top">Integrations</td>
-                <td className="p-4 border-l-2 align-top">
-                  <div className="flex flex-wrap gap-1">
-                    {tool1.integrations?.map((int, i) => (
-                      <Badge key={i} variant="secondary" className="font-normal text-xs">{int}</Badge>
-                    ))}
-                  </div>
-                </td>
-                <td className="p-4 border-l-2 align-top">
-                  <div className="flex flex-wrap gap-1">
-                    {tool2.integrations?.map((int, i) => (
-                      <Badge key={i} variant="secondary" className="font-normal text-xs">{int}</Badge>
-                    ))}
-                  </div>
-                </td>
+                {tools.map((t) => (
+                  <td key={t.id} className="p-4 border-l-2 align-top">
+                    <div className="flex flex-wrap gap-1">
+                      {t.integrations?.map((int, i) => (
+                        <Badge key={i} variant="secondary" className="font-normal text-xs">{int}</Badge>
+                      ))}
+                    </div>
+                  </td>
+                ))}
               </tr>
             </tbody>
           </table>
@@ -378,7 +381,7 @@ export default function CompareTools() {
         {recommendedTool && (
           <div className="text-center">
             <p className="text-muted-foreground text-sm mb-4 font-medium">
-              Based on our independent scoring, <strong>{recommendedTool.name}</strong> is the better fit for most fencing contractors.
+              Based on our independent scoring, <strong>{recommendedTool.name}</strong> is the best fit for most fencing contractors.
             </p>
             <a
               href={recommendedTool.affiliateUrl ?? "#"}

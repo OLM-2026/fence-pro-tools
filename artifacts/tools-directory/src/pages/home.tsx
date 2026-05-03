@@ -77,12 +77,12 @@ export default function Home() {
   return (
     <div className="flex flex-col animate-in fade-in duration-500">
       <Helmet>
-        <title>Pro Fence Tools — Best Software for Fencing Contractors (2025 Directory)</title>
+        <title>Pro Fence Tools: Best Software for Fencing Contractors (2025 Directory)</title>
         <meta
           name="description"
-          content="The only independent software directory built for fencing contractors. Compare 22 tools across estimating, scheduling, CRM, invoicing, and marketing. No paid placements — just what works in the field."
+          content="The only independent software directory built for fencing contractors. Compare 22 tools across estimating, scheduling, CRM, invoicing, and marketing. No paid placements, just what works in the field."
         />
-        <meta property="og:title" content="Pro Fence Tools — Best Software for Fencing Contractors" />
+        <meta property="og:title" content="Pro Fence Tools: Best Software for Fencing Contractors" />
         <meta property="og:description" content="22 software tools reviewed specifically for fence companies. Save time, win more jobs, and make more money. Independent, no paid placements." />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -126,12 +126,12 @@ export default function Home() {
           </h1>
 
           <p className="text-base md:text-lg text-white/60 font-semibold mb-2 uppercase tracking-widest">
-            Built for the trade — not just any small business
+            Built for the trade, not just any small business
           </p>
 
           <p className="text-lg md:text-xl text-white/75 max-w-2xl mb-10 font-medium leading-relaxed">
             Here are the top 22 software tools you need to run it. Whether you're just starting out,
-            already running a crew, or took over an existing business — the right software does
+            already running a crew, or took over an existing business, the right software does
             the work of 5 people, down to 1.
           </p>
 
@@ -160,11 +160,11 @@ export default function Home() {
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#f5a623]" />
-              {stats?.totalCategories ?? 9} areas of your business covered
+              {stats?.totalCategories ?? 9} departments of your business covered
             </span>
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#f5a623]" />
-              100% independent — no paid placements
+              100% independent, no paid placements
             </span>
           </div>
         </div>
@@ -259,7 +259,7 @@ export default function Home() {
               {
                 icon: "📐",
                 problem: "Quoting takes hours",
-                solution: "Estimating software cuts it to 20 minutes — on-site, before you leave the driveway.",
+                solution: "Estimating software cuts it to 20 minutes, on-site, before you leave the driveway.",
                 impact: "Win more jobs",
               },
               {
@@ -271,7 +271,7 @@ export default function Home() {
               {
                 icon: "📅",
                 problem: "Missed jobs and dispatch confusion",
-                solution: "Scheduling software keeps your crew in sync — no more double bookings or no-shows.",
+                solution: "Scheduling software keeps your crew in sync, no more double bookings or no-shows.",
                 impact: "Run a tighter crew",
               },
               {
@@ -382,11 +382,11 @@ export default function Home() {
             className="text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-4"
             style={{ fontFamily: "var(--app-font-display)" }}
           >
-            Compare any two fence software tools
+            Compare fence software tools side by side
           </h2>
           <p className="text-white/60 max-w-xl mb-10 font-medium">
-            Pick two software tools and see a side-by-side breakdown of pricing,
-            features, free trial, and mobile app support. No sales pitch — just the facts.
+            Pick two or three software tools and see a side-by-side breakdown of pricing,
+            features, free trial, and mobile app support. No sales pitch, just the facts.
           </p>
 
           <CompareWidget />
@@ -494,7 +494,7 @@ export default function Home() {
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-12 text-lg">
             No generic small-business software lists. Every software tool in this directory
-            was evaluated specifically for fencing — residential, commercial, and multi-crew operations.
+            was evaluated specifically for fencing: residential, commercial, and multi-crew operations.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
             {[
@@ -548,7 +548,7 @@ export default function Home() {
           </h2>
           <p className="text-white/60 mb-8 font-medium">
             New software tools, pricing updates, and tips for running a more efficient
-            fence company — straight to your inbox every week.
+            fence company, straight to your inbox every week.
           </p>
           <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
             <Input

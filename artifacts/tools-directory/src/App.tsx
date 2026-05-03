@@ -45,6 +45,7 @@ function Router() {
           <Route path="/tool/:slug" component={Tool} />
           <Route path="/compare" component={CompareIndex} />
           <Route path="/compare/:slug1/:slug2" component={CompareTools} />
+          <Route path="/compare/:slug1/:slug2/:slug3" component={CompareTools} />
           <Route path="/submit" component={Submit} />
           <Route path="/blog" component={BlogList} />
           <Route path="/blog/:slug" component={BlogPostDetail} />

@@ -52,9 +52,9 @@ export default function ToolDetail() {
   return (
     <div className="animate-in fade-in duration-500">
       <Helmet>
-        <title>{tool.name} for Fence Companies — Review, Pricing & Features | Pro Fence Tools</title>
+        <title>{tool.name} for Fence Companies: Review, Pricing and Features | Pro Fence Tools</title>
         <meta name="description" content={`Is ${tool.name} the right choice for your fence company? Read our independent review covering pricing, pros, cons, and how it fits fence contractor workflows. ${tool.pricingStartsAt ? `Starts at ${tool.pricingStartsAt}.` : ""}`} />
-        <meta property="og:title" content={`${tool.name} — Is It Right for Your Fence Company?`} />
+        <meta property="og:title" content={`${tool.name}: Is It Right for Your Fence Company?`} />
         <meta property="og:description" content={tool.description} />
         <meta property="og:type" content="article" />
         {tool.logoUrl && <meta property="og:image" content={tool.logoUrl} />}

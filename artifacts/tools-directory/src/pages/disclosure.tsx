@@ -34,7 +34,7 @@ export default function Disclosure() {
               FenceProTools is a free, independently run directory. We don't charge contractors to list a tool, and we don't charge you to access the site. To cover the costs of research, writing, hosting, and keeping everything updated, we use affiliate partnerships with some of the software companies we cover.
             </p>
             <p className="text-muted-foreground leading-relaxed mt-3">
-              When you click a link to a tool on FenceProTools and sign up for a paid plan, we may receive a commission from that company. This is how many independent review and directory sites operate — including the trade publications and comparison sites you've used before.
+              When you click a link to a tool on FenceProTools and sign up for a paid plan, we may receive a commission from that company. This is how many independent review and directory sites operate, including the trade publications and comparison sites you've used before.
             </p>
           </section>
 
@@ -51,7 +51,7 @@ export default function Disclosure() {
           <section>
             <h2 className="text-xl font-bold mb-3">How this affects our recommendations</h2>
             <p className="text-muted-foreground leading-relaxed">
-              It doesn't. Our editorial process is independent of our commercial relationships. Tools are evaluated based on their usefulness to fencing contractors — features, pricing, mobile app quality, integrations, and real-world fit for fence installation businesses. A tool that pays us a commission doesn't get a better rating because of it, and a tool that doesn't have an affiliate program doesn't get excluded.
+              It doesn't. Our editorial process is independent of our commercial relationships. Tools are evaluated based on their usefulness to fencing contractors: features, pricing, mobile app quality, integrations, and real-world fit for fence installation businesses. A tool that pays us a commission doesn't get a better rating because of it, and a tool that doesn't have an affiliate program doesn't get excluded.
             </p>
             <p className="text-muted-foreground leading-relaxed mt-3">
               We include tools on FenceProTools because we believe they're worth knowing about. If we wouldn't suggest a tool to a friend running a fence crew, it doesn't go in the directory.
