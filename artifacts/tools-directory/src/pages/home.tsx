@@ -376,23 +376,23 @@ export default function Home() {
           </div>
 
           {isLoadingCategories ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {Array.from({ length: 9 }).map((_, i) => (
                 <Skeleton key={i} className="h-24 rounded-sm" />
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3">
               {categories?.map((cat, i) => (
                 <Link key={cat.id} href={`/category/${cat.slug}`} className="block group">
                   <div
-                    className="p-5 rounded-sm border-2 bg-card hover:border-[#f5a623] hover:shadow-md transition-all duration-200 flex items-center gap-4"
+                    className="p-3 sm:p-5 rounded-sm border-2 bg-card hover:border-[#f5a623] hover:shadow-md transition-all duration-200 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 h-full"
                     style={{ animationDelay: `${i * 40}ms` }}
                   >
-                    <span className="text-2xl shrink-0">{CATEGORY_ICONS[cat.slug] ?? "🔧"}</span>
-                    <div>
-                      <h3 className="font-bold group-hover:text-[#f5a623] transition-colors leading-tight">{cat.name}</h3>
-                      <p className="text-sm text-muted-foreground mt-0.5">{cat.toolCount} software tool{cat.toolCount === 1 ? "" : "s"}</p>
+                    <span className="text-xl shrink-0">{CATEGORY_ICONS[cat.slug] ?? "🔧"}</span>
+                    <div className="min-w-0">
+                      <h3 className="text-sm font-bold group-hover:text-[#f5a623] transition-colors leading-snug">{cat.name}</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">{cat.toolCount} tool{cat.toolCount === 1 ? "" : "s"}</p>
                     </div>
                   </div>
                 </Link>
