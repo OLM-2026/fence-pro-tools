@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useLocation } from "wouter";
-import { ArrowLeftRight, Check, Minus, ChevronRight } from "lucide-react";
+import { useLocation, Link } from "wouter";
+import { ArrowLeftRight, Check, Minus, ChevronRight, Trophy, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useListTools } from "@workspace/api-client-react";
 
@@ -24,25 +24,31 @@ export function CompareWidget() {
     if (slug1 && slug2 && slug1 !== slug2) navigate(`/compare/${slug1}/${slug2}`);
   };
 
-  const rows = [
-    { label: "Starting price", val: (t: typeof tool1) => t?.pricingStartsAt || "Contact" },
-    { label: "Best for", val: (t: typeof tool1) => t?.bestFor || "All sizes" },
+  // Count boolean "wins" per tool
+  const boolRows = ["freeTrial", "mobileApp"] as const;
+  const score1 = tool1 ? boolRows.filter((k) => tool1[k]).length : 0;
+  const score2 = tool2 ? boolRows.filter((k) => tool2[k]).length : 0;
+  const winner = score1 > score2 ? tool1 : score2 > score1 ? tool2 : null;
+
+  const rows: { label: string; val: (t: typeof tool1) => React.ReactNode }[] = [
+    { label: "Starting price", val: (t) => t?.pricingStartsAt || "Contact" },
+    { label: "Best for", val: (t) => t?.bestFor || "All sizes" },
     {
       label: "Free trial",
-      val: (t: typeof tool1) =>
+      val: (t) =>
         t?.freeTrial ? (
-          <Check className="w-4 h-4 text-green-500" />
+          <Check className="w-4 h-4 text-green-400" />
         ) : (
-          <Minus className="w-4 h-4 text-muted-foreground" />
+          <Minus className="w-4 h-4 text-white/20" />
         ),
     },
     {
       label: "Mobile app",
-      val: (t: typeof tool1) =>
+      val: (t) =>
         t?.mobileApp ? (
-          <Check className="w-4 h-4 text-green-500" />
+          <Check className="w-4 h-4 text-green-400" />
         ) : (
-          <Minus className="w-4 h-4 text-muted-foreground" />
+          <Minus className="w-4 h-4 text-white/20" />
         ),
     },
   ];
@@ -86,11 +92,17 @@ export function CompareWidget() {
 
       {/* Mini comparison table */}
       {tool1 && tool2 && (
-        <div className="border border-white/10 rounded-sm overflow-hidden mb-6">
+        <div className="border border-white/10 rounded-sm overflow-hidden mb-5">
           <div className="grid grid-cols-3 bg-white/5">
-            <div className="p-3 text-xs font-bold uppercase tracking-wider text-white/40"></div>
-            <div className="p-3 text-sm font-bold text-[#f5a623] border-l border-white/10 text-center">{tool1.name}</div>
-            <div className="p-3 text-sm font-bold text-[#f5a623] border-l border-white/10 text-center">{tool2.name}</div>
+            <div className="p-3 text-xs font-bold uppercase tracking-wider text-white/40" />
+            <div className={`p-3 text-sm font-bold border-l border-white/10 text-center transition-colors ${winner === tool1 ? "text-[#f5a623]" : "text-white/70"}`}>
+              {tool1.name}
+              {winner === tool1 && <Trophy className="w-3 h-3 inline ml-1 text-[#f5a623]" />}
+            </div>
+            <div className={`p-3 text-sm font-bold border-l border-white/10 text-center transition-colors ${winner === tool2 ? "text-[#f5a623]" : "text-white/70"}`}>
+              {tool2.name}
+              {winner === tool2 && <Trophy className="w-3 h-3 inline ml-1 text-[#f5a623]" />}
+            </div>
           </div>
           {rows.map((row, i) => (
             <div key={i} className={`grid grid-cols-3 border-t border-white/10 ${i % 2 === 0 ? "bg-white/[0.03]" : ""}`}>
@@ -106,8 +118,28 @@ export function CompareWidget() {
         </div>
       )}
 
+      {/* Winner callout */}
+      {winner && (
+        <div className="bg-[#f5a623]/10 border border-[#f5a623]/30 rounded-sm p-4 mb-5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <Trophy className="w-4 h-4 text-[#f5a623] shrink-0" />
+            <p className="text-sm font-bold text-white">
+              <span className="text-[#f5a623]">{winner.name}</span> has more features for most fence contractors
+            </p>
+          </div>
+          <a
+            href={winner.affiliateUrl || "#"}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shrink-0 text-xs font-bold bg-[#f5a623] text-[#0d1f3c] px-3 py-1.5 rounded-sm hover:bg-[#f5a623]/90 transition-colors flex items-center gap-1"
+          >
+            Visit {winner.name} <ExternalLink className="w-3 h-3" />
+          </a>
+        </div>
+      )}
+
       {/* Quick presets */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-5">
         {PRESETS.map((p) => {
           const t1 = tools.find((t) => t.slug === p.slug1);
           const t2 = tools.find((t) => t.slug === p.slug2);

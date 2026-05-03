@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ToolCard } from "@/components/ToolCard";
 import { CompareWidget } from "@/components/CompareWidget";
+import { TestimonialSlider } from "@/components/TestimonialSlider";
 import {
   useListCategories,
   useGetFeaturedTools,
@@ -99,9 +100,11 @@ export default function Home() {
         />
 
         <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center">
+          <img src="/logo.png" alt="FenceProTools" className="h-28 md:h-36 w-auto mb-6 drop-shadow-2xl" />
+
           <div className="inline-flex items-center gap-2 bg-[#f5a623]/10 border border-[#f5a623]/30 text-[#f5a623] text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-sm mb-8">
             <Shield className="w-3.5 h-3.5" />
-            Built for the trade — not generic small business
+            Built for the trade — not just any small business
           </div>
 
           <h1
@@ -110,7 +113,7 @@ export default function Home() {
           >
             Starting a fence company?
             <br />
-            <span className="text-[#f5a623]">Here are all 22 software tools</span>
+            <span className="text-[#f5a623]">Here are the top 22 software tools</span>
             <br />
             you need to run it.
           </h1>
@@ -208,7 +211,7 @@ export default function Home() {
                     <span className="text-2xl shrink-0">{CATEGORY_ICONS[cat.slug] ?? "🔧"}</span>
                     <div>
                       <h3 className="font-bold group-hover:text-[#f5a623] transition-colors leading-tight">{cat.name}</h3>
-                      <p className="text-sm text-muted-foreground mt-0.5">{cat.toolCount} software tools</p>
+                      <p className="text-sm text-muted-foreground mt-0.5">{cat.toolCount} software tool{cat.toolCount === 1 ? "" : "s"}</p>
                     </div>
                   </div>
                 </Link>
@@ -305,6 +308,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── TESTIMONIALS (1) ── */}
+      <TestimonialSlider
+        variant="light"
+        title="What fence contractors are saying"
+        subtitle="Real reviews from fencing business owners using these software tools."
+      />
+
       {/* ── NEW THIS WEEK ── */}
       {newTools && newTools.length > 0 && (
         <section className="py-16 bg-muted/20 border-t">
@@ -371,6 +381,13 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── TESTIMONIALS (2) ── */}
+      <TestimonialSlider
+        variant="dark"
+        title="Trusted by fence contractors across the US"
+        subtitle="Here's what real fence company owners have to say about the tools in this directory."
+      />
 
       {/* ── NEWSLETTER ── */}
       <section className="py-20 bg-[#0d1f3c] text-white text-center relative overflow-hidden">

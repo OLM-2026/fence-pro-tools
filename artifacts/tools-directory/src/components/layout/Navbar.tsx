@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 export function Navbar() {
   return (
     <header className="border-b bg-primary text-primary-foreground">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center">
-          <img src="/logo.png" alt="FenceProTools" className="h-12 w-auto" />
+          <img src="/logo.png" alt="FenceProTools" className="h-16 w-auto" />
         </Link>
         <nav className="hidden md:flex gap-6 text-sm font-medium">
           <Link href="/" className="hover:text-accent transition-colors">Directory</Link>
