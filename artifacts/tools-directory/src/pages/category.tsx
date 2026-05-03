@@ -43,16 +43,22 @@ export default function Category() {
     bestFor: bestFor !== "all" && bestFor !== "" ? bestFor : undefined,
   });
 
-  const title = isAll ? "All Software Tools" : category?.name || "Loading...";
-  const description = isAll 
-    ? "Browse our complete directory of software tools for fencing contractors."
-    : category?.description || `Find the best ${category?.name} software for your fencing business.`;
+  const title = isAll ? "All Software Tools for Fencing Contractors" : category?.name || "Loading...";
+  const seoTitle = isAll
+    ? "All Fencing Contractor Software Tools — Pro Fence Tools Directory"
+    : `Best ${category?.name} Software for Fence Companies — Pro Fence Tools`;
+  const description = isAll
+    ? `Browse all ${tools?.length ?? 22} software tools reviewed for fencing contractors — estimating, CRM, scheduling, invoicing, marketing, and more. Independent, no paid placements.`
+    : category?.description || `Compare the best ${category?.name} software tools for fence companies. Independent reviews, pricing, and side-by-side comparisons.`;
 
   return (
     <div className="flex flex-col min-h-screen bg-muted/10 animate-in fade-in duration-300">
       <Helmet>
-        <title>{title} - FenceProTools</title>
+        <title>{seoTitle}</title>
         <meta name="description" content={description} />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={description} />
+        <meta name="robots" content="index, follow" />
       </Helmet>
 
       {/* Header */}

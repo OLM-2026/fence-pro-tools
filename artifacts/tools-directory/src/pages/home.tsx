@@ -77,11 +77,21 @@ export default function Home() {
   return (
     <div className="flex flex-col animate-in fade-in duration-500">
       <Helmet>
-        <title>FenceProTools — Software Directory for Fencing Contractors</title>
+        <title>Pro Fence Tools — Best Software for Fencing Contractors (2025 Directory)</title>
         <meta
           name="description"
-          content="22 legit software tools reviewed for fencing contractors. Estimating, scheduling, CRM, invoicing, marketing and more — built for the trade."
+          content="The only independent software directory built for fencing contractors. Compare 22 tools across estimating, scheduling, CRM, invoicing, and marketing. No paid placements — just what works in the field."
         />
+        <meta property="og:title" content="Pro Fence Tools — Best Software for Fencing Contractors" />
+        <meta property="og:description" content="22 software tools reviewed specifically for fence companies. Save time, win more jobs, and make more money. Independent, no paid placements." />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Best Software Tools for Fencing Contractors",
+          "description": "Independent directory of software tools reviewed for fence company owners.",
+          "numberOfItems": stats?.totalTools ?? 22,
+          "url": "/"
+        })}</script>
       </Helmet>
 
       {/* ── HERO ── */}
@@ -89,7 +99,6 @@ export default function Home() {
         className="bg-[#0d1f3c] text-white py-20 lg:py-28 relative overflow-hidden"
         style={{ backgroundImage: "radial-gradient(ellipse at 70% 50%, #162d54 0%, #0d1f3c 70%)" }}
       >
-        {/* subtle grid texture */}
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -100,35 +109,37 @@ export default function Home() {
         />
 
         <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center">
-          <img src="/logo.png" alt="FenceProTools" className="h-28 md:h-36 w-auto mb-6 drop-shadow-2xl" />
+          <img src="/logo.png" alt="Pro Fence Tools" className="h-28 md:h-36 w-auto mb-6 drop-shadow-2xl" />
 
-          <div className="inline-flex items-center gap-2 bg-[#f5a623]/10 border border-[#f5a623]/30 text-[#f5a623] text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-sm mb-8">
-            <Shield className="w-3.5 h-3.5" />
-            Built for the trade — not just any small business
+          <div className="inline-flex items-center gap-2 bg-[#f5a623] text-[#0d1f3c] text-xs font-black uppercase tracking-widest px-5 py-2.5 rounded-sm mb-6 shadow-lg">
+            <Zap className="w-3.5 h-3.5 fill-current" />
+            1% better every day starts today
           </div>
 
           <h1
-            className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none max-w-4xl mb-6"
+            className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-none max-w-4xl mb-4"
             style={{ fontFamily: "var(--app-font-display)" }}
           >
-            Starting a fence company?
+            Save time. Make more money.
             <br />
-            <span className="text-[#f5a623]">Here are the top 22 software tools</span>
-            <br />
-            you need to run it.
+            <span className="text-[#f5a623]">Run a smarter fence company.</span>
           </h1>
 
-          <p className="text-lg md:text-xl text-white/70 max-w-2xl mb-10 font-medium">
-            We reviewed every major software tool across every part of a fencing
-            business — estimating, scheduling, CRM, invoicing, marketing, and more.
-            No fluff. Just what actually works in the field.
+          <p className="text-base md:text-lg text-white/60 font-semibold mb-2 uppercase tracking-widest">
+            Built for the trade — not just any small business
+          </p>
+
+          <p className="text-lg md:text-xl text-white/75 max-w-2xl mb-10 font-medium leading-relaxed">
+            Here are the top 22 software tools you need to run it. Whether you're just starting out,
+            already running a crew, or took over an existing business — the right software does
+            the work of 5 people, down to 1.
           </p>
 
           <form onSubmit={handleSearch} className="w-full max-w-2xl flex relative mb-6">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <Input
               type="search"
-              placeholder="Search software tools, categories..."
+              placeholder="Search tools, categories... (e.g. estimating, CRM, invoicing)"
               className="h-14 pl-12 pr-36 rounded-sm text-base bg-white text-gray-900 border-2 border-transparent focus-visible:border-[#f5a623] shadow-lg"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -142,7 +153,7 @@ export default function Home() {
             </Button>
           </form>
 
-          <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold text-white/50">
+          <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold text-white/40">
             <span className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-[#f5a623]" />
               {stats?.totalTools ?? 22} software tools reviewed
@@ -156,6 +167,134 @@ export default function Home() {
               100% independent — no paid placements
             </span>
           </div>
+        </div>
+      </section>
+
+      {/* ── WHO IS THIS FOR ── */}
+      <section className="py-14 bg-white border-b">
+        <div className="container mx-auto px-4">
+          <p className="text-center text-[#f5a623] font-bold uppercase tracking-widest text-xs mb-3">
+            Find your starting point
+          </p>
+          <h2
+            className="text-center text-2xl md:text-3xl font-extrabold text-[#0d1f3c] mb-10 tracking-tight"
+            style={{ fontFamily: "var(--app-font-display)" }}
+          >
+            Where are you in your fence business journey?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto">
+            {[
+              {
+                emoji: "🚀",
+                heading: "Starting a fence company",
+                body: "You're setting up from scratch and want to start right. We'll show you exactly which tools to set up first — estimating, quoting, and getting paid.",
+                cta: "Start here",
+                href: "/category/estimating-software",
+                color: "border-[#f5a623]",
+              },
+              {
+                emoji: "⚙️",
+                heading: "Already running a crew, want to go digital",
+                body: "You're busy, maybe still doing things manually, and you know there's a smarter way. Find the one tool that solves your biggest time drain.",
+                cta: "Streamline your workflow",
+                href: "/category/field-service",
+                color: "border-[#0d1f3c]",
+              },
+              {
+                emoji: "🏢",
+                heading: "Took over or bought a fence business",
+                body: "You inherited systems (or no systems). Get a full picture of every software category and decide what to keep, upgrade, or replace.",
+                cta: "See all categories",
+                href: "/category/all",
+                color: "border-gray-200",
+              },
+            ].map((card) => (
+              <Link key={card.heading} href={card.href} className="block group">
+                <div className={`p-6 rounded-sm border-2 ${card.color} hover:border-[#f5a623] hover:shadow-lg transition-all duration-200 h-full flex flex-col bg-white`}>
+                  <span className="text-3xl mb-4 block">{card.emoji}</span>
+                  <h3 className="font-extrabold text-[#0d1f3c] text-lg mb-2 leading-tight" style={{ fontFamily: "var(--app-font-display)" }}>
+                    {card.heading}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed flex-grow mb-4">{card.body}</p>
+                  <span className="inline-flex items-center gap-1 text-sm font-bold text-[#f5a623] group-hover:gap-2 transition-all">
+                    {card.cta} <ChevronRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── THE WORK OF 5, DOWN TO 1 ── */}
+      <section className="py-16 bg-[#0d1f3c] text-white relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "linear-gradient(#f5a623 1px, transparent 1px), linear-gradient(90deg, #f5a623 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <p className="text-[#f5a623] font-bold uppercase tracking-widest text-xs mb-3">Why this matters</p>
+            <h2
+              className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4"
+              style={{ fontFamily: "var(--app-font-display)" }}
+            >
+              Good software doesn't just save time.
+              <br />
+              <span className="text-[#f5a623]">It makes you money.</span>
+            </h2>
+            <p className="text-white/65 text-lg leading-relaxed font-medium">
+              Start with one problem you're trying to solve — a quote that takes too long, invoices that never get paid,
+              crews that don't know where to be. The right software turns the work of 5 people into the work of 1.
+              Every hour you save is an hour you can spend on another job, with your family, or just not thinking about
+              work at the end of the day.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+            {[
+              {
+                icon: "📐",
+                problem: "Quoting takes hours",
+                solution: "Estimating software cuts it to 20 minutes — on-site, before you leave the driveway.",
+                impact: "Win more jobs",
+              },
+              {
+                icon: "💳",
+                problem: "Chasing unpaid invoices",
+                solution: "Automated invoicing and payment links mean you get paid faster, without the follow-up calls.",
+                impact: "Improve cash flow",
+              },
+              {
+                icon: "📅",
+                problem: "Missed jobs and dispatch confusion",
+                solution: "Scheduling software keeps your crew in sync — no more double bookings or no-shows.",
+                impact: "Run a tighter crew",
+              },
+              {
+                icon: "📋",
+                problem: "Leads falling through the cracks",
+                solution: "A CRM automatically follows up with every lead so no job opportunity is ever lost.",
+                impact: "Grow your revenue",
+              },
+            ].map((item) => (
+              <div key={item.problem} className="bg-white/5 border border-white/10 rounded-sm p-5 hover:border-[#f5a623]/40 transition-colors">
+                <span className="text-2xl block mb-3">{item.icon}</span>
+                <p className="text-white/40 text-xs font-bold uppercase tracking-wider mb-1">The problem</p>
+                <p className="text-white font-bold mb-3 leading-tight">{item.problem}</p>
+                <p className="text-white/60 text-sm leading-relaxed mb-4">{item.solution}</p>
+                <span className="inline-block text-xs font-black text-[#0d1f3c] bg-[#f5a623] px-2 py-1 rounded-sm uppercase tracking-wide">
+                  {item.impact}
+                </span>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-white/30 text-sm mt-8 font-medium italic">
+            This stuff is easier than you think. You don't need to hire someone to set it up. Pick one tool, try it free, and start today.
+          </p>
         </div>
       </section>
 

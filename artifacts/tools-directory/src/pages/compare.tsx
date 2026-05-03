@@ -56,8 +56,19 @@ export default function CompareTools() {
   return (
     <div className="animate-in fade-in duration-500 pb-20">
       <Helmet>
-        <title>Compare {tool1.name} vs {tool2.name} - FenceProTools</title>
-        <meta name="description" content={`Compare features, pricing, and reviews for ${tool1.name} and ${tool2.name}.`} />
+        <title>{tool1.name} vs {tool2.name} for Fence Companies — Side-by-Side Comparison | Pro Fence Tools</title>
+        <meta name="description" content={`${tool1.name} vs ${tool2.name}: Which is better for fencing contractors? Side-by-side comparison of pricing, features, free trial availability, and mobile app support. Independent, no sponsored results.`} />
+        <meta property="og:title" content={`${tool1.name} vs ${tool2.name} — Fence Company Software Comparison`} />
+        <meta property="og:description" content={`Compare ${tool1.name} and ${tool2.name} side-by-side for fencing contractors. Pricing, features, and a clear recommendation.`} />
+        <meta name="robots" content="index, follow" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": `${tool1.name} vs ${tool2.name} for Fencing Contractors`,
+          "description": `Independent comparison of ${tool1.name} and ${tool2.name} for fence company owners. Covers pricing, features, free trial, and mobile app.`,
+          "author": { "@type": "Organization", "name": "Pro Fence Tools" },
+          "publisher": { "@type": "Organization", "name": "Pro Fence Tools" }
+        })}</script>
       </Helmet>
 
       <div className="bg-muted/30 border-b border-border/50">
