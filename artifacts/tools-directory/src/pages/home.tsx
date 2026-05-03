@@ -80,10 +80,10 @@ export default function Home() {
         <title>Pro Fence Tools: Best Software for Fencing Contractors (2025 Directory)</title>
         <meta
           name="description"
-          content="The only independent software directory built for fencing contractors. Compare 22 tools across estimating, scheduling, CRM, invoicing, and marketing. No paid placements, just what works in the field."
+          content={`The only independent software directory built for fencing contractors. Compare ${stats?.totalTools ?? ""} tools across estimating, scheduling, CRM, invoicing, and marketing. No paid placements, just what works in the field.`}
         />
         <meta property="og:title" content="Pro Fence Tools: Best Software for Fencing Contractors" />
-        <meta property="og:description" content="22 software tools reviewed specifically for fence companies. Save time, win more jobs, and make more money. Independent, no paid placements." />
+        <meta property="og:description" content={`${stats?.totalTools ?? ""} software tools reviewed specifically for fence companies. Save time, win more jobs, and make more money. Independent, no paid placements.`} />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "ItemList",
@@ -130,7 +130,7 @@ export default function Home() {
           </p>
 
           <p className="text-lg md:text-xl text-white/75 max-w-2xl mb-10 font-medium leading-relaxed">
-            Here are the top 22 software tools you need to run it. Whether you're just starting out,
+            Here are the top {stats?.totalTools ?? ""} software tools you need to run it. Whether you're just starting out,
             already running a crew, or took over an existing business, the right software does
             the work of 5 people, down to 1.
           </p>
@@ -482,7 +482,7 @@ export default function Home() {
           <div className="mt-10 flex justify-center">
             <Link href="/category/all">
               <Button className="rounded-sm font-bold bg-[#0d1f3c] hover:bg-[#0d1f3c]/90 text-white px-8 h-12">
-                Browse all 22 software tools <ArrowRight className="w-4 h-4 ml-2" />
+                Browse all {stats?.totalTools ?? ""} software tools <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
           </div>
