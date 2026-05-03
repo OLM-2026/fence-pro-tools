@@ -2,11 +2,16 @@
 
 # compiled output
 dist
+out
 tmp
 out-tsc
 *.tsbuildinfo
 .expo
 .expo-shared
+
+# build caches
+.turbo/
+.swc/
 
 # dependencies
 node_modules

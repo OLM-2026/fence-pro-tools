@@ -1,2 +1,4 @@
 .next/
+out/
+.swc/
 node_modules/
