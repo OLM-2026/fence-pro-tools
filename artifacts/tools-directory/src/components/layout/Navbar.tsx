@@ -15,8 +15,8 @@ export function Navbar() {
           <Link href="/about" className="hover:text-accent transition-colors">About</Link>
         </nav>
         <div className="flex items-center gap-4">
-          <Button asChild variant="secondary" size="sm" className="hidden sm:flex text-xs font-semibold px-3 py-2 h-auto whitespace-normal text-center max-w-[200px] leading-tight">
-            <Link href="/submit">Interested in submitting a software tool to help fence contractors in their business?</Link>
+          <Button asChild variant="secondary" size="sm" className="hidden sm:flex">
+            <Link href="/submit">Software Submission</Link>
           </Button>
         </div>
       </div>
