@@ -16,7 +16,7 @@ export function Navbar() {
         </nav>
         <div className="flex items-center gap-4">
           <Button asChild variant="secondary" size="sm" className="hidden sm:flex">
-            <Link href="/submit">Software Submission</Link>
+            <Link href="/submit">Software Consideration</Link>
           </Button>
         </div>
       </div>
