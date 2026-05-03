@@ -261,34 +261,76 @@ export default function Home() {
                 problem: "Quoting takes hours",
                 solution: "Estimating software cuts it to 20 minutes, on-site, before you leave the driveway.",
                 impact: "Win more jobs",
+                categorySlug: "/fence-estimating-software",
+                primaryTool: { slug: "arcsite", name: "ArcSite" },
+                secondaryTools: [
+                  { slug: "estimate-rocket", name: "Estimate Rocket" },
+                ],
+                compareSlug: "/compare/arcsite/estimate-rocket",
               },
               {
                 icon: "💳",
                 problem: "Chasing unpaid invoices",
                 solution: "Automated invoicing and payment links mean you get paid faster, without the follow-up calls.",
                 impact: "Improve cash flow",
+                categorySlug: "/fence-invoicing-software",
+                primaryTool: { slug: "invoice-ninja", name: "Invoice Ninja" },
+                secondaryTools: [
+                  { slug: "quickbooks-online", name: "QuickBooks Online" },
+                ],
+                compareSlug: "/compare/invoice-ninja/quickbooks-online",
               },
               {
                 icon: "📅",
                 problem: "Missed jobs and dispatch confusion",
                 solution: "Scheduling software keeps your crew in sync, no more double bookings or no-shows.",
                 impact: "Run a tighter crew",
+                categorySlug: "/fence-scheduling-software",
+                primaryTool: { slug: "jobber", name: "Jobber" },
+                secondaryTools: [
+                  { slug: "housecall-pro", name: "Housecall Pro" },
+                ],
+                compareSlug: "/compare/jobber/housecall-pro",
               },
               {
                 icon: "📋",
                 problem: "Leads falling through the cracks",
                 solution: "A CRM automatically follows up with every lead so no job opportunity is ever lost.",
                 impact: "Grow your revenue",
+                categorySlug: "/fence-crm-software",
+                primaryTool: { slug: "hubspot-crm", name: "HubSpot CRM" },
+                secondaryTools: [
+                  { slug: "markate", name: "Markate" },
+                ],
+                compareSlug: "/compare/hubspot-crm/markate",
               },
             ].map((item) => (
-              <div key={item.problem} className="bg-white/5 border border-white/10 rounded-sm p-5 hover:border-[#f5a623]/40 transition-colors">
+              <div key={item.problem} className="bg-white/5 border border-white/10 rounded-sm p-5 hover:border-[#f5a623]/40 transition-colors flex flex-col">
                 <span className="text-2xl block mb-3">{item.icon}</span>
                 <p className="text-white/40 text-xs font-bold uppercase tracking-wider mb-1">The problem</p>
                 <p className="text-white font-bold mb-3 leading-tight">{item.problem}</p>
                 <p className="text-white/60 text-sm leading-relaxed mb-4">{item.solution}</p>
-                <span className="inline-block text-xs font-black text-[#0d1f3c] bg-[#f5a623] px-2 py-1 rounded-sm uppercase tracking-wide">
-                  {item.impact}
-                </span>
+                <Link href={item.categorySlug}>
+                  <span className="inline-block text-xs font-black text-[#0d1f3c] bg-[#f5a623] px-2 py-1 rounded-sm uppercase tracking-wide cursor-pointer hover:bg-[#f5a623]/80 transition-colors">
+                    {item.impact}
+                  </span>
+                </Link>
+                <div className="mt-4 pt-4 border-t border-white/10 space-y-2">
+                  <p className="text-white/30 text-[10px] font-bold uppercase tracking-wider">Top picks</p>
+                  <Link href={`/tool/${item.primaryTool.slug}`} className="flex items-center gap-2 group">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#f5a623] shrink-0" />
+                    <span className="text-white/70 text-xs font-semibold group-hover:text-[#f5a623] transition-colors">{item.primaryTool.name}</span>
+                  </Link>
+                  {item.secondaryTools.map((t) => (
+                    <Link key={t.slug} href={`/tool/${t.slug}`} className="flex items-center gap-2 group">
+                      <span className="w-1.5 h-1.5 rounded-full bg-white/20 shrink-0" />
+                      <span className="text-white/50 text-xs font-semibold group-hover:text-white/80 transition-colors">{t.name}</span>
+                    </Link>
+                  ))}
+                  <Link href={item.compareSlug} className="flex items-center gap-1 mt-2 text-[10px] font-bold text-white/30 hover:text-[#f5a623] uppercase tracking-wider transition-colors">
+                    <ArrowRight className="w-3 h-3" /> Compare these tools
+                  </Link>
+                </div>
               </div>
             ))}
           </div>

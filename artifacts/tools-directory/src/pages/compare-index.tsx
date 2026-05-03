@@ -1,243 +1,250 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Helmet } from "react-helmet-async";
-import { ArrowRight, ArrowLeftRight, Plus, X } from "lucide-react";
+import { ArrowRight, Check, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useListTools } from "@workspace/api-client-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useListTools, useListCategories } from "@workspace/api-client-react";
+import { categoryUrl } from "@/lib/seo-slugs";
 
-const POPULAR = [
-  {
-    slug1: "jobber",
-    slug2: "housecall-pro",
-    label1: "Jobber",
-    label2: "Housecall Pro",
-    category: "Field Service",
-    note: "The two most popular all-in-one platforms for small fence crews.",
-  },
-  {
-    slug1: "arcsite",
-    slug2: "estimate-rocket",
-    label1: "ArcSite",
-    label2: "Estimate Rocket",
-    category: "Estimating",
-    note: "Field-sketch takeoffs vs. clean proposal templates. Which fits your workflow?",
-  },
-  {
-    slug1: "jobber",
-    slug2: "servicetitan",
-    label1: "Jobber",
-    label2: "ServiceTitan",
-    category: "Field Service",
-    note: "Affordable simplicity vs. enterprise power. Know when to upgrade.",
-  },
-  {
-    slug1: "hubspot-crm",
-    slug2: "markate",
-    label1: "HubSpot CRM",
-    label2: "Markate",
-    category: "CRM / Marketing",
-    note: "General-purpose CRM vs. a tool built specifically for home service businesses.",
-  },
-  {
-    slug1: "housecall-pro",
-    slug2: "mhelpdesk",
-    label1: "Housecall Pro",
-    label2: "mHelpDesk",
-    category: "Scheduling",
-    note: "Both handle scheduling and invoicing. Here's which wins for fence contractors.",
-  },
-  {
-    slug1: "quickbooks-online",
-    slug2: "invoice-ninja",
-    label1: "QuickBooks Online",
-    label2: "Invoice Ninja",
-    category: "Accounting / Invoicing",
-    note: "Industry standard accounting vs. a free alternative. Worth paying for?",
-  },
-  {
-    slug1: "broadly",
-    slug2: "markate",
-    label1: "Broadly",
-    label2: "Markate",
-    category: "Marketing",
-    note: "Two reputation and lead-gen tools built for local service businesses.",
-  },
-  {
-    slug1: "servicetitan",
-    slug2: "buildertrend",
-    label1: "ServiceTitan",
-    label2: "Buildertrend",
-    category: "Enterprise",
-    note: "Two heavy-duty platforms for larger fence operations and commercial jobs.",
-  },
-];
+const CATEGORY_ICONS: Record<string, string> = {
+  "estimating-software": "📐",
+  "crm": "📋",
+  "field-service": "⚙️",
+  "invoicing": "💳",
+  "scheduling": "📅",
+  "project-management": "📌",
+  "marketing": "📣",
+  "accounting": "📊",
+  "branded-materials-swag": "👕",
+};
 
 export default function CompareIndex() {
-  const { data: tools = [] } = useListTools();
+  const { data: categories = [], isLoading: isLoadingCats } = useListCategories();
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const { data: allTools = [], isLoading: isLoadingTools } = useListTools({
+    category: selectedCategory || undefined,
+  });
+  const [selectedSlugs, setSelectedSlugs] = useState<string[]>([]);
   const [, navigate] = useLocation();
-  const [tool1, setTool1] = useState("");
-  const [tool2, setTool2] = useState("");
-  const [tool3, setTool3] = useState("");
-  const [showThird, setShowThird] = useState(false);
 
-  const handleCustomCompare = () => {
-    const selected = [tool1, tool2, tool3].filter(Boolean);
-    const unique = [...new Set(selected)];
-    if (unique.length < 2) return;
-    navigate(`/compare/${unique.join("/")}`);
+  const toggleTool = (slug: string) => {
+    setSelectedSlugs((prev) => {
+      if (prev.includes(slug)) return prev.filter((s) => s !== slug);
+      if (prev.length >= 3) return prev; // max 3
+      return [...prev, slug];
+    });
   };
 
-  const canCompare = tool1 && tool2 && tool1 !== tool2 &&
-    (!showThird || !tool3 || (tool3 !== tool1 && tool3 !== tool2));
+  const handleCompare = () => {
+    if (selectedSlugs.length >= 2) {
+      navigate(`/compare/${selectedSlugs.join("/")}`);
+    }
+  };
 
-  const toolOptions = tools.map((t) => ({ slug: t.slug, name: t.name }));
+  const categoryTools = selectedCategory ? allTools : [];
 
   return (
     <div className="animate-in fade-in duration-500 pb-20">
       <Helmet>
-        <title>Compare Fencing Software Tools - Pro Fence Tools</title>
+        <title>Compare Fencing Software by Category - Pro Fence Tools</title>
         <meta
           name="description"
-          content="Side-by-side comparisons of the best software for fencing contractors. Compare two or three tools on pricing, features, free trials, and mobile app support."
+          content="Compare fencing software tools side by side by category. Pick up to 3 tools and see a full feature checklist breakdown. Independent, no paid placements."
         />
       </Helmet>
 
+      {/* Header */}
       <div className="bg-[#0d1f3c] text-white py-14">
         <div className="container mx-auto px-4 max-w-3xl text-center">
           <h1
             className="text-3xl md:text-4xl font-extrabold tracking-tight mb-4"
             style={{ fontFamily: "var(--app-font-display)" }}
           >
-            Compare fencing software side by side
+            Compare fencing software by category
           </h1>
           <p className="text-white/70 text-lg font-medium">
-            Pick two or three tools and see a full breakdown of pricing, features, pros, cons, and integrations. No sales pitch, just the facts.
+            Pick a department, select up to 3 tools, and see a full feature checklist side by side. No sales pitch, just the facts.
           </p>
         </div>
       </div>
 
-      {/* Custom compare builder */}
-      <div className="border-b bg-muted/30">
-        <div className="container mx-auto px-4 py-8 max-w-3xl">
-          <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-5 text-center">
-            Build a custom comparison
-          </p>
+      <div className="container mx-auto px-4 py-10 max-w-5xl">
 
-          <div className="flex flex-col gap-3">
-            {/* Row 1: tool1 vs tool2 */}
-            <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-              <select
-                className="flex-1 border-2 rounded-sm px-3 py-2 text-sm font-medium bg-background focus:outline-none focus:border-primary"
-                value={tool1}
-                onChange={(e) => setTool1(e.target.value)}
-              >
-                <option value="">Select first tool...</option>
-                {toolOptions.map((t) => (
-                  <option key={t.slug} value={t.slug} disabled={t.slug === tool2 || t.slug === tool3}>
-                    {t.name}
-                  </option>
-                ))}
-              </select>
+        {/* Step 1: Pick a category */}
+        <div className="mb-10">
+          <div className="flex items-center gap-3 mb-5">
+            <span className="w-7 h-7 rounded-full bg-[#0d1f3c] text-white text-xs font-black flex items-center justify-center shrink-0">1</span>
+            <h2 className="text-lg font-extrabold tracking-tight" style={{ fontFamily: "var(--app-font-display)" }}>
+              Choose a department
+            </h2>
+          </div>
 
-              <div className="flex items-center justify-center shrink-0">
-                <ArrowLeftRight className="w-5 h-5 text-muted-foreground" />
-              </div>
+          {isLoadingCats ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-16 rounded-sm" />)}
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    setSelectedCategory(cat.slug);
+                    setSelectedSlugs([]);
+                  }}
+                  className={`flex items-center gap-3 p-4 rounded-sm border-2 text-left font-semibold transition-all ${
+                    selectedCategory === cat.slug
+                      ? "border-[#f5a623] bg-[#f5a623]/10 text-[#0d1f3c]"
+                      : "border-border bg-card hover:border-[#0d1f3c]/40 text-foreground"
+                  }`}
+                >
+                  <span className="text-xl shrink-0">{CATEGORY_ICONS[cat.slug] ?? "🔧"}</span>
+                  <div>
+                    <p className="text-sm font-bold leading-tight">{cat.name}</p>
+                    <p className="text-xs text-muted-foreground font-normal mt-0.5">{cat.toolCount} tools</p>
+                  </div>
+                  {selectedCategory === cat.slug && <Check className="w-4 h-4 text-[#f5a623] ml-auto shrink-0" />}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
-              <select
-                className="flex-1 border-2 rounded-sm px-3 py-2 text-sm font-medium bg-background focus:outline-none focus:border-primary"
-                value={tool2}
-                onChange={(e) => setTool2(e.target.value)}
-              >
-                <option value="">Select second tool...</option>
-                {toolOptions.map((t) => (
-                  <option key={t.slug} value={t.slug} disabled={t.slug === tool1 || t.slug === tool3}>
-                    {t.name}
-                  </option>
-                ))}
-              </select>
+        {/* Step 2: Pick tools (shown once a category is selected) */}
+        {selectedCategory && (
+          <div className="mb-10 animate-in fade-in duration-300">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="w-7 h-7 rounded-full bg-[#0d1f3c] text-white text-xs font-black flex items-center justify-center shrink-0">2</span>
+              <h2 className="text-lg font-extrabold tracking-tight" style={{ fontFamily: "var(--app-font-display)" }}>
+                Select up to 3 tools to compare
+              </h2>
+              {selectedSlugs.length > 0 && (
+                <Badge className="bg-[#f5a623] text-[#0d1f3c] font-black">
+                  {selectedSlugs.length} selected
+                </Badge>
+              )}
             </div>
 
-            {/* Optional 3rd tool */}
-            {showThird ? (
-              <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-                <div className="flex items-center justify-center shrink-0 sm:w-[calc(50%+20px)] sm:justify-end">
-                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">+ Also compare</span>
-                </div>
-                <div className="flex flex-1 gap-2 items-center">
-                  <select
-                    className="flex-1 border-2 rounded-sm px-3 py-2 text-sm font-medium bg-background focus:outline-none focus:border-primary"
-                    value={tool3}
-                    onChange={(e) => setTool3(e.target.value)}
-                  >
-                    <option value="">Select third tool (optional)...</option>
-                    {toolOptions.map((t) => (
-                      <option key={t.slug} value={t.slug} disabled={t.slug === tool1 || t.slug === tool2}>
-                        {t.name}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    onClick={() => { setShowThird(false); setTool3(""); }}
-                    className="p-2 rounded-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-                    aria-label="Remove third tool"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
+            {isLoadingTools ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-24 rounded-sm" />)}
               </div>
+            ) : categoryTools.length === 0 ? (
+              <p className="text-muted-foreground text-sm">No tools found in this category.</p>
             ) : (
-              <button
-                onClick={() => setShowThird(true)}
-                className="self-start flex items-center gap-1.5 text-xs font-bold text-muted-foreground hover:text-foreground uppercase tracking-wider transition-colors"
-              >
-                <Plus className="w-3.5 h-3.5" /> Add a third tool
-              </button>
-            )}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {categoryTools.map((tool) => {
+                  const selected = selectedSlugs.includes(tool.slug);
+                  const maxed = selectedSlugs.length >= 3 && !selected;
+                  return (
+                    <button
+                      key={tool.id}
+                      onClick={() => !maxed && toggleTool(tool.slug)}
+                      disabled={maxed}
+                      className={`flex items-start gap-4 p-4 rounded-sm border-2 text-left transition-all ${
+                        selected
+                          ? "border-[#f5a623] bg-[#f5a623]/5"
+                          : maxed
+                          ? "border-border bg-muted/30 opacity-40 cursor-not-allowed"
+                          : "border-border bg-card hover:border-[#0d1f3c]/50"
+                      }`}
+                    >
+                      {/* Checkbox */}
+                      <div className={`mt-0.5 w-5 h-5 rounded-sm border-2 shrink-0 flex items-center justify-center transition-colors ${
+                        selected ? "bg-[#f5a623] border-[#f5a623]" : "border-muted-foreground/40"
+                      }`}>
+                        {selected && <Check className="w-3 h-3 text-[#0d1f3c]" />}
+                      </div>
 
-            <div className="flex justify-end">
+                      {/* Logo or initial */}
+                      <div className="w-10 h-10 shrink-0 flex items-center justify-center bg-muted rounded-sm overflow-hidden">
+                        {tool.logoUrl ? (
+                          <img src={tool.logoUrl} alt={tool.name} className="w-full h-full object-contain" />
+                        ) : (
+                          <span className="text-base font-black text-muted-foreground">{tool.name[0]}</span>
+                        )}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-sm leading-tight">{tool.name}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5 font-medium">{tool.pricingStartsAt || "Contact for pricing"}</p>
+                        <div className="flex gap-2 mt-1.5 flex-wrap">
+                          {tool.freeTrial && (
+                            <span className="text-[10px] font-bold text-green-700 bg-green-100 px-1.5 py-0.5 rounded-sm">Free trial</span>
+                          )}
+                          {tool.mobileApp && (
+                            <span className="text-[10px] font-bold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded-sm">Mobile app</span>
+                          )}
+                          {tool.bestFor && (
+                            <span className="text-[10px] font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm">{tool.bestFor}</span>
+                          )}
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Step 3: Compare button */}
+        {selectedSlugs.length >= 2 && (
+          <div className="mb-12 animate-in slide-in-from-bottom-4 duration-300">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="w-7 h-7 rounded-full bg-[#f5a623] text-[#0d1f3c] text-xs font-black flex items-center justify-center shrink-0">3</span>
+              <h2 className="text-lg font-extrabold tracking-tight" style={{ fontFamily: "var(--app-font-display)" }}>
+                See the full comparison
+              </h2>
+            </div>
+            <div className="bg-[#0d1f3c] rounded-sm p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <div className="flex-1">
+                <p className="text-white font-bold text-sm mb-1">Comparing: {selectedSlugs.map((s) => allTools.find((t) => t.slug === s)?.name).filter(Boolean).join(" vs ")}</p>
+                <p className="text-white/50 text-xs">Full feature checklist, pricing, pros and cons, and a clear winner recommendation.</p>
+              </div>
               <Button
-                className="rounded-sm font-bold bg-[#f5a623] text-[#0d1f3c] hover:bg-[#f5a623]/90 px-8"
-                disabled={!canCompare}
-                onClick={handleCustomCompare}
+                onClick={handleCompare}
+                className="shrink-0 bg-[#f5a623] hover:bg-[#f5a623]/90 text-[#0d1f3c] font-black rounded-sm px-6 h-11"
               >
-                Compare {showThird && tool3 ? "3 tools" : "tools"}
+                Compare {selectedSlugs.length} tools <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
             </div>
           </div>
-        </div>
-      </div>
+        )}
 
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-        <h2 className="text-xl font-bold mb-1">Popular comparisons</h2>
-        <p className="text-muted-foreground text-sm font-medium mb-8">
-          The questions we hear most from fence contractors.
-        </p>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          {POPULAR.map((pair) => (
-            <Link
-              key={`${pair.slug1}-${pair.slug2}`}
-              href={`/compare/${pair.slug1}/${pair.slug2}`}
-            >
-              <div className="group border-2 rounded-sm p-5 bg-card hover:border-[#0d1f3c] hover:shadow-md transition-all cursor-pointer h-full flex flex-col">
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-bold text-base">{pair.label1}</span>
-                    <span className="text-muted-foreground text-sm font-medium">vs</span>
-                    <span className="font-bold text-base">{pair.label2}</span>
+        {/* Popular comparisons */}
+        <div>
+          <h2 className="text-xl font-bold mb-1">Popular comparisons</h2>
+          <p className="text-muted-foreground text-sm font-medium mb-6">
+            The questions we hear most from fence contractors.
+          </p>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              { slug1: "jobber", slug2: "housecall-pro", label1: "Jobber", label2: "Housecall Pro", category: "Field Service", note: "The two most popular all-in-one platforms for small fence crews." },
+              { slug1: "arcsite", slug2: "estimate-rocket", label1: "ArcSite", label2: "Estimate Rocket", category: "Estimating", note: "Field-sketch takeoffs vs. clean proposal templates. Which fits your workflow?" },
+              { slug1: "jobber", slug2: "servicetitan", label1: "Jobber", label2: "ServiceTitan", category: "Field Service", note: "Affordable simplicity vs. enterprise power. Know when to upgrade." },
+              { slug1: "quickbooks-online", slug2: "invoice-ninja", label1: "QuickBooks Online", label2: "Invoice Ninja", category: "Accounting / Invoicing", note: "Industry standard accounting vs. a free alternative. Worth paying for?" },
+              { slug1: "housecall-pro", slug2: "mhelpdesk", label1: "Housecall Pro", label2: "mHelpDesk", category: "Scheduling", note: "Both handle scheduling and invoicing. Here's which wins for fence contractors." },
+              { slug1: "broadly", slug2: "markate", label1: "Broadly", label2: "Markate", category: "Marketing", note: "Two reputation and lead-gen tools built for local service businesses." },
+            ].map((pair) => (
+              <Link key={`${pair.slug1}-${pair.slug2}`} href={`/compare/${pair.slug1}/${pair.slug2}`}>
+                <div className="group border-2 rounded-sm p-5 bg-card hover:border-[#0d1f3c] hover:shadow-md transition-all cursor-pointer h-full flex flex-col">
+                  <div className="flex items-start justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-bold text-base">{pair.label1}</span>
+                      <span className="text-muted-foreground text-sm font-medium">vs</span>
+                      <span className="font-bold text-base">{pair.label2}</span>
+                    </div>
+                    <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-[#0d1f3c] transition-colors shrink-0 mt-0.5" />
                   </div>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-[#0d1f3c] transition-colors shrink-0 mt-0.5" />
+                  <Badge variant="secondary" className="self-start mb-3 text-xs font-semibold rounded-sm">{pair.category}</Badge>
+                  <p className="text-sm text-muted-foreground font-medium leading-relaxed mt-auto">{pair.note}</p>
                 </div>
-                <Badge variant="secondary" className="self-start mb-3 text-xs font-semibold rounded-sm">
-                  {pair.category}
-                </Badge>
-                <p className="text-sm text-muted-foreground font-medium leading-relaxed mt-auto">
-                  {pair.note}
-                </p>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -22,8 +22,7 @@ export function Footer() {
             <img src="/logo.png" alt="Pro Fence Tools" className="h-14 w-auto" />
           </Link>
           <p className="text-primary-foreground/70 max-w-md text-sm leading-relaxed">
-            The definitive independent resource for fence company owners who want to save time,
-            make more money, and run a smarter business. Built for the trade, not just any small business.
+            The definitive independent resource for fence company owners who want to save time, make more money, and run a smarter fence business. Built for the trade, not just any small business.
           </p>
         </div>
 
