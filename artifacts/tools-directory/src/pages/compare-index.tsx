@@ -65,7 +65,7 @@ export default function CompareIndex() {
             Compare fencing software by category
           </h1>
           <p className="text-white/70 text-lg font-medium">
-            Pick a department, select up to 3 tools, and see a full feature checklist side by side. No sales pitch, just the facts.
+            Pick a department, select up to 3 tools, and see a full feature checklist side by side. No sales pitch here, just the facts. Your choice, your pick based on your needs.
           </p>
         </div>
       </div>

@@ -428,7 +428,7 @@ export default function Home() {
           </h2>
           <p className="text-white/60 max-w-xl mb-10 font-medium">
             Pick two or three software tools and see a side-by-side breakdown of pricing,
-            features, free trial, and mobile app support. No sales pitch, just the facts.
+            features, free trial, and mobile app support. No sales pitch here, just the facts. Your choice, your pick based on your needs.
           </p>
 
           <CompareWidget />
