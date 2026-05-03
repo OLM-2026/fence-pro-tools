@@ -1,7 +1,7 @@
-import { Link } from "wouter";
+import Link from "next/link";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tool } from "@workspace/api-client-react";
+import { Tool } from "@/lib/api";
 import { ExternalLink, Star } from "lucide-react";
 
 interface ToolCardProps {
@@ -25,16 +25,24 @@ export function ToolCard({ tool, headingLevel = "h3" }: ToolCardProps) {
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-sm bg-muted flex items-center justify-center shrink-0 border-2 overflow-hidden shadow-sm">
               {tool.logoUrl ? (
-                <img src={tool.logoUrl} alt={`${tool.name} logo`} className="w-full h-full object-cover" />
+                <img
+                  src={tool.logoUrl}
+                  alt={`${tool.name} logo`}
+                  className="w-full h-full object-cover"
+                />
               ) : (
-                <span className="font-bold text-xl text-muted-foreground">{tool.name.charAt(0)}</span>
+                <span className="font-bold text-xl text-muted-foreground">
+                  {tool.name.charAt(0)}
+                </span>
               )}
             </div>
             <div>
               <Heading className="font-bold text-lg group-hover:text-accent transition-colors line-clamp-1">
                 {tool.name}
               </Heading>
-              <p className="text-sm text-muted-foreground capitalize">{tool.category?.replace(/-/g, " ")}</p>
+              <p className="text-sm text-muted-foreground capitalize">
+                {tool.category?.replace(/-/g, " ")}
+              </p>
             </div>
           </div>
           <p className="text-sm text-foreground/80 line-clamp-3 leading-relaxed">

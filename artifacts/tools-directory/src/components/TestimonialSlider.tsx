@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
@@ -12,7 +14,8 @@ interface Testimonial {
 
 const TESTIMONIALS: Testimonial[] = [
   {
-    quote: "Jobber has completely changed how we run the business. Scheduling, invoicing, and client follow-up — all in one place. We stopped losing jobs because we forgot to follow up.",
+    quote:
+      "Jobber has completely changed how we run the business. Scheduling, invoicing, and client follow-up — all in one place. We stopped losing jobs because we forgot to follow up.",
     author: "Mike T.",
     role: "Owner, fence installation company",
     tool: "Jobber",
@@ -20,7 +23,8 @@ const TESTIMONIALS: Testimonial[] = [
     source: "Google",
   },
   {
-    quote: "ArcSite cut our estimating time in half. I can sketch a fence layout on-site and have a professional quote ready before I leave the customer's driveway. My close rate went up immediately.",
+    quote:
+      "ArcSite cut our estimating time in half. I can sketch a fence layout on-site and have a professional quote ready before I leave the customer's driveway. My close rate went up immediately.",
     author: "Dave R.",
     role: "Residential fence contractor",
     tool: "ArcSite",
@@ -28,7 +32,8 @@ const TESTIMONIALS: Testimonial[] = [
     source: "Google",
   },
   {
-    quote: "My crews actually use the Housecall Pro app in the field without me chasing them. That alone sold me. Everything syncs automatically and payments come in fast.",
+    quote:
+      "My crews actually use the Housecall Pro app in the field without me chasing them. That alone sold me. Everything syncs automatically and payments come in fast.",
     author: "Carlos M.",
     role: "3-crew fence company owner",
     tool: "Housecall Pro",
@@ -36,7 +41,8 @@ const TESTIMONIALS: Testimonial[] = [
     source: "Google",
   },
   {
-    quote: "We ordered 500 yard signs through Sticker Mule for about $200. Every job we finish gets a sign at the curb. We track at least 4-5 neighbor leads a month straight from those signs.",
+    quote:
+      "We ordered 500 yard signs through Sticker Mule for about $200. Every job we finish gets a sign at the curb. We track at least 4-5 neighbor leads a month straight from those signs.",
     author: "Tom B.",
     role: "Residential fencing, Texas",
     tool: "Sticker Mule",
@@ -44,7 +50,8 @@ const TESTIMONIALS: Testimonial[] = [
     source: "Google",
   },
   {
-    quote: "Vistaprint door hangers for our neighborhood campaigns cost us almost nothing and they convert. We hit the streets around every finished job with a stack of 200.",
+    quote:
+      "Vistaprint door hangers for our neighborhood campaigns cost us almost nothing and they convert. We hit the streets around every finished job with a stack of 200.",
     author: "Jessica L.",
     role: "Fence company marketing manager",
     tool: "Vistaprint",
@@ -52,7 +59,8 @@ const TESTIMONIALS: Testimonial[] = [
     source: "Google",
   },
   {
-    quote: "My accountant insisted on QuickBooks and I'm glad she did. Once I connected it to Jobber, I can see exactly which jobs are profitable and which ones I was undercharging on.",
+    quote:
+      "My accountant insisted on QuickBooks and I'm glad she did. Once I connected it to Jobber, I can see exactly which jobs are profitable and which ones I was undercharging on.",
     author: "Ray G.",
     role: "Fence contractor, 8 years in business",
     tool: "QuickBooks Online",
@@ -60,7 +68,8 @@ const TESTIMONIALS: Testimonial[] = [
     source: "Google",
   },
   {
-    quote: "We tried Estimate Rocket for quoting and it's clean and simple. Clients sign electronically, which saves us the run-around of waiting for a signed contract to schedule the job.",
+    quote:
+      "We tried Estimate Rocket for quoting and it's clean and simple. Clients sign electronically, which saves us the run-around of waiting for a signed contract to schedule the job.",
     author: "Brendan W.",
     role: "Solo fence contractor",
     tool: "Estimate Rocket",
@@ -68,7 +77,8 @@ const TESTIMONIALS: Testimonial[] = [
     source: "Capterra",
   },
   {
-    quote: "Custom Ink made it painless to get 24 polos for our crew. The design tool is actually usable — I'm not a designer and I had a proof approved in 20 minutes.",
+    quote:
+      "Custom Ink made it painless to get 24 polos for our crew. The design tool is actually usable — I'm not a designer and I had a proof approved in 20 minutes.",
     author: "Angela S.",
     role: "Operations manager, fence company",
     tool: "Custom Ink",
@@ -119,14 +129,24 @@ export function TestimonialSlider({
       <div className="container mx-auto px-4">
         <div className="flex items-end justify-between mb-10">
           <div>
-            <p className="text-[#f5a623] font-bold uppercase tracking-widest text-xs mb-2">Verified reviews</p>
+            <p className="text-[#f5a623] font-bold uppercase tracking-widest text-xs mb-2">
+              Verified reviews
+            </p>
             <h2
-              className={`text-3xl md:text-4xl font-extrabold tracking-tight ${isDark ? "text-white" : "text-[#0d1f3c]"}`}
+              className={`text-3xl md:text-4xl font-extrabold tracking-tight ${
+                isDark ? "text-white" : "text-[#0d1f3c]"
+              }`}
               style={{ fontFamily: "var(--app-font-display)" }}
             >
               {title}
             </h2>
-            <p className={`mt-2 text-sm font-medium ${isDark ? "text-white/50" : "text-gray-500"}`}>{subtitle}</p>
+            <p
+              className={`mt-2 text-sm font-medium ${
+                isDark ? "text-white/50" : "text-gray-500"
+              }`}
+            >
+              {subtitle}
+            </p>
           </div>
           <div className="flex gap-2 shrink-0">
             <button
@@ -155,7 +175,9 @@ export function TestimonialSlider({
         </div>
 
         <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-5 transition-opacity duration-300 ${isAnimating ? "opacity-0" : "opacity-100"}`}
+          className={`grid grid-cols-1 md:grid-cols-3 gap-5 transition-opacity duration-300 ${
+            isAnimating ? "opacity-0" : "opacity-100"
+          }`}
         >
           {slice.map((t, i) => (
             <div
@@ -171,31 +193,46 @@ export function TestimonialSlider({
                   <Star key={j} className="w-4 h-4 fill-[#f5a623] text-[#f5a623]" />
                 ))}
               </div>
-              <p className={`text-sm leading-relaxed flex-grow mb-5 ${isDark ? "text-white/80" : "text-gray-700"}`}>
-                "{t.quote}"
+              <p
+                className={`text-sm leading-relaxed flex-grow mb-5 ${
+                  isDark ? "text-white/80" : "text-gray-700"
+                }`}
+              >
+                &ldquo;{t.quote}&rdquo;
               </p>
               <div className="flex items-center justify-between mt-auto pt-4 border-t border-dashed border-current/10">
                 <div>
-                  <p className={`font-bold text-sm ${isDark ? "text-white" : "text-[#0d1f3c]"}`}>{t.author}</p>
-                  <p className={`text-xs mt-0.5 ${isDark ? "text-white/40" : "text-gray-400"}`}>{t.role}</p>
+                  <p className={`font-bold text-sm ${isDark ? "text-white" : "text-[#0d1f3c]"}`}>
+                    {t.author}
+                  </p>
+                  <p className={`text-xs mt-0.5 ${isDark ? "text-white/40" : "text-gray-400"}`}>
+                    {t.role}
+                  </p>
                 </div>
                 <div className="text-right">
                   <span className="text-xs font-bold text-[#f5a623] bg-[#f5a623]/10 px-2 py-1 rounded-sm">
                     {t.tool}
                   </span>
-                  <p className={`text-xs mt-1 ${isDark ? "text-white/30" : "text-gray-400"}`}>via {t.source}</p>
+                  <p className={`text-xs mt-1 ${isDark ? "text-white/30" : "text-gray-400"}`}>
+                    via {t.source}
+                  </p>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Dot indicators */}
         <div className="flex justify-center gap-2 mt-8">
           {Array.from({ length: pages }).map((_, i) => (
             <button
               key={i}
-              onClick={() => { if (!isAnimating) { setIsAnimating(true); setCurrent(i); setTimeout(() => setIsAnimating(false), 350); } }}
+              onClick={() => {
+                if (!isAnimating) {
+                  setIsAnimating(true);
+                  setCurrent(i);
+                  setTimeout(() => setIsAnimating(false), 350);
+                }
+              }}
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 i === current
                   ? "w-8 bg-[#f5a623]"

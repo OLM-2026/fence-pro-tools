@@ -16,6 +16,23 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
 
+## Artifacts
+
+### tools-directory (`@workspace/tools-directory`)
+- **Framework**: Next.js 15 App Router (SSR/SSG)
+- **Purpose**: FenceProTools — curated directory for fencing contractors
+- **Brand**: Navy `#0d1f3c`, Gold `#f5a623`, Barlow Condensed display font
+- **Routes**: Home `/`, tool detail `/tool/[slug]`, SEO category pages `/fence-[category]-software`, compare `/compare/[slug1]/[slug2]`, admin `/admin`, blog `/blog`
+- **Data**: Server-side fetch from Express API server at `http://localhost:8080`
+- **SEO slugs**: Defined in `src/lib/seo-slugs.ts` — maps DB category slugs to SEO-friendly URL paths
+- **Key components**: `FeaturedToolsSection` (client, search), `CompareWidget` (client, react-query), `TestimonialSlider` (client, auto-advance), `CategoryContent` (client, filters+sort)
+- **Workflow**: `artifacts/tools-directory: web` (port 25965)
+
+### api-server (`@workspace/api-server`)
+- Express 5 + Drizzle ORM
+- Routes: `/api/tools`, `/api/categories`, `/api/tools/:slug`, `/api/admin/tools/:slug` (PATCH)
+- Running on port 8080
+
 ## Key Commands
 
 - `pnpm run typecheck` — full typecheck across all packages
