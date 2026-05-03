@@ -141,6 +141,57 @@ router.get("/tools/:slug", async (req, res): Promise<void> => {
   res.json(GetToolBySlugResponse.parse(serializeTool(row)));
 });
 
+/* ── ADMIN: PATCH /admin/tools/:slug ── */
+router.patch("/admin/tools/:slug", async (req, res): Promise<void> => {
+  const token = req.headers["x-admin-token"];
+  const adminSecret = process.env.ADMIN_SECRET ?? "fenceprotools-admin";
+  if (token !== adminSecret) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
+  const { slug } = req.params;
+  const {
+    name, description, pricingStartsAt, affiliateUrl, logoUrl,
+    featured, isNew, freeTrial, mobileApp, bestFor,
+    pros, cons, integrations, rating,
+  } = req.body as Partial<typeof toolsTable.$inferInsert>;
+
+  const updates: Partial<typeof toolsTable.$inferInsert> = {};
+  if (name !== undefined) updates.name = name;
+  if (description !== undefined) updates.description = description;
+  if (pricingStartsAt !== undefined) updates.pricingStartsAt = pricingStartsAt;
+  if (affiliateUrl !== undefined) updates.affiliateUrl = affiliateUrl;
+  if (logoUrl !== undefined) updates.logoUrl = logoUrl;
+  if (featured !== undefined) updates.featured = featured;
+  if (isNew !== undefined) updates.isNew = isNew;
+  if (freeTrial !== undefined) updates.freeTrial = freeTrial;
+  if (mobileApp !== undefined) updates.mobileApp = mobileApp;
+  if (bestFor !== undefined) updates.bestFor = bestFor;
+  if (pros !== undefined) updates.pros = pros;
+  if (cons !== undefined) updates.cons = cons;
+  if (integrations !== undefined) updates.integrations = integrations;
+  if (rating !== undefined) updates.rating = rating;
+
+  if (Object.keys(updates).length === 0) {
+    res.status(400).json({ error: "No fields to update" });
+    return;
+  }
+
+  const [updated] = await db
+    .update(toolsTable)
+    .set(updates)
+    .where(eq(toolsTable.slug, slug))
+    .returning();
+
+  if (!updated) {
+    res.status(404).json({ error: "Tool not found" });
+    return;
+  }
+
+  res.json(serializeTool(updated));
+});
+
 router.post("/submissions", async (req, res): Promise<void> => {
   const parsed = SubmitToolBody.safeParse(req.body);
   if (!parsed.success) {

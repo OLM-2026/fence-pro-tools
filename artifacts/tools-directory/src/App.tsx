@@ -16,6 +16,7 @@ import BlogList from "@/pages/blog";
 import BlogPostDetail from "@/pages/blog-detail";
 import About from "@/pages/about";
 import Disclosure from "@/pages/disclosure";
+import Admin from "@/pages/admin";
 import NotFound from "@/pages/not-found";
 
 const queryClient = new QueryClient();
@@ -51,6 +52,7 @@ function Router() {
           <Route path="/blog/:slug" component={BlogPostDetail} />
           <Route path="/about" component={About} />
           <Route path="/disclosure" component={Disclosure} />
+          <Route path="/admin" component={Admin} />
           <Route component={NotFound} />
         </Switch>
       </main>

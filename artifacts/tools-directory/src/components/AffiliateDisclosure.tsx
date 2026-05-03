@@ -23,15 +23,13 @@ export default function AffiliateDisclosure({ variant = "footer" }: AffiliateDis
 
   if (variant === "page-top") {
     return (
-      <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6 rounded">
-        <p className="text-sm text-gray-700">
-          <strong>Heads up:</strong> Some links on this page are affiliate links. If you sign up through one, we may earn a commission at no extra cost to you. Our recommendations don't change based on that.{" "}
-          <Link href="/disclosure" className="underline hover:text-gray-900 transition-colors">
-            Learn more
-          </Link>
-          .
-        </p>
-      </div>
+      <p className="text-xs text-muted-foreground/50 mb-4 font-medium">
+        Some links are affiliate links.{" "}
+        <Link href="/disclosure" className="underline underline-offset-2 hover:text-muted-foreground transition-colors">
+          Learn more
+        </Link>
+        .
+      </p>
     );
   }
 
