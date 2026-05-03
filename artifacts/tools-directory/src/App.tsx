@@ -27,7 +27,21 @@ function Router() {
       <main className="flex-grow flex flex-col">
         <Switch>
           <Route path="/" component={Home} />
+
+          {/* SEO-friendly category URLs */}
+          <Route path="/fence-estimating-software" component={Category} />
+          <Route path="/fence-crm-software" component={Category} />
+          <Route path="/fence-field-service-software" component={Category} />
+          <Route path="/fence-invoicing-software" component={Category} />
+          <Route path="/fence-scheduling-software" component={Category} />
+          <Route path="/fence-project-management-software" component={Category} />
+          <Route path="/fence-marketing-software" component={Category} />
+          <Route path="/fence-accounting-software" component={Category} />
+          <Route path="/fence-branded-materials" component={Category} />
+
+          {/* Legacy category routes (still supported) */}
           <Route path="/category/:slug" component={Category} />
+
           <Route path="/tool/:slug" component={Tool} />
           <Route path="/compare" component={CompareIndex} />
           <Route path="/compare/:slug1/:slug2" component={CompareTools} />

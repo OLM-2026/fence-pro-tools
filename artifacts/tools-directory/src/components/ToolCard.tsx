@@ -6,9 +6,12 @@ import { ExternalLink, Star } from "lucide-react";
 
 interface ToolCardProps {
   tool: Tool;
+  headingLevel?: "h2" | "h3";
 }
 
-export function ToolCard({ tool }: ToolCardProps) {
+export function ToolCard({ tool, headingLevel = "h3" }: ToolCardProps) {
+  const Heading = headingLevel;
+
   return (
     <Link href={`/tool/${tool.slug}`} className="block h-full group">
       <Card className="h-full flex flex-col transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-xl hover:border-accent/60 group-hover:border-accent/60 relative overflow-hidden border-2">
@@ -28,7 +31,9 @@ export function ToolCard({ tool }: ToolCardProps) {
               )}
             </div>
             <div>
-              <h3 className="font-bold text-lg group-hover:text-accent transition-colors line-clamp-1">{tool.name}</h3>
+              <Heading className="font-bold text-lg group-hover:text-accent transition-colors line-clamp-1">
+                {tool.name}
+              </Heading>
               <p className="text-sm text-muted-foreground capitalize">{tool.category?.replace(/-/g, " ")}</p>
             </div>
           </div>
