@@ -89,12 +89,17 @@ function winnerIdx(scores: number[]): number | null {
 function ToolHeader({ tool }: { tool: Tool }) {
   return (
     <div className="flex flex-col items-start gap-3">
-      {tool.logoUrl && (
-        <div className="h-10 w-full flex items-center">
-          <img src={tool.logoUrl} alt={tool.name} className="max-h-full object-contain" />
-        </div>
-      )}
-      <h2 className="text-xl font-bold">{tool.name}</h2>
+      {/* Logo */}
+      <div className="h-12 w-full flex items-center">
+        {tool.logoUrl ? (
+          <img src={tool.logoUrl} alt={`${tool.name} logo`} className="max-h-full max-w-[120px] object-contain" />
+        ) : (
+          <div className="h-12 w-12 rounded-sm bg-[#0d1f3c] flex items-center justify-center shrink-0">
+            <span className="text-xl font-black text-[#f5a623]">{tool.name[0]}</span>
+          </div>
+        )}
+      </div>
+      <h2 className="text-xl font-bold leading-tight">{tool.name}</h2>
       <a
         href={tool.affiliateUrl ?? "#"}
         target="_blank"
@@ -295,7 +300,7 @@ export default function CompareTools() {
               {/* Scored criteria header */}
               <tr className="border-b-2 border-t-2 bg-[#0d1f3c]/5">
                 <td colSpan={tools.length + 1} className="p-3 text-xs font-black uppercase tracking-widest text-[#0d1f3c] text-center">
-                  Scored criteria -- Pro Fence Tools independent assessment
+                  Scored criteria: Pro Fence Tools independent assessment
                 </td>
               </tr>
 
@@ -377,20 +382,63 @@ export default function CompareTools() {
           </table>
         </div>
 
-        {/* Bottom CTA */}
+        {/* Bottom Winner Section */}
         {recommendedTool && (
-          <div className="text-center">
-            <p className="text-muted-foreground text-sm mb-4 font-medium">
-              Based on our independent scoring, <strong>{recommendedTool.name}</strong> is the best fit for most fencing contractors.
-            </p>
-            <a
-              href={recommendedTool.affiliateUrl ?? "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[#f5a623] hover:bg-[#f5a623]/90 text-[#0d1f3c] font-bold px-8 py-3 rounded-sm transition-colors text-base"
-            >
-              Get started with {recommendedTool.name} <ExternalLink className="w-4 h-4" />
-            </a>
+          <div className="bg-[#0d1f3c] rounded-sm overflow-hidden shadow-xl">
+            {/* Gold top bar */}
+            <div className="bg-[#f5a623] px-6 py-2 flex items-center gap-2">
+              <Trophy className="w-4 h-4 text-[#0d1f3c]" />
+              <span className="text-[#0d1f3c] font-black text-xs uppercase tracking-widest">Our pick for fence contractors</span>
+            </div>
+
+            <div className="p-8 flex flex-col sm:flex-row items-center gap-8">
+              {/* Logo */}
+              <div className="shrink-0 flex flex-col items-center gap-3">
+                {recommendedTool.logoUrl ? (
+                  <div className="bg-white rounded-sm p-4 w-28 h-20 flex items-center justify-center">
+                    <img
+                      src={recommendedTool.logoUrl}
+                      alt={`${recommendedTool.name} logo`}
+                      className="max-w-full max-h-full object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-[#f5a623] rounded-sm w-20 h-20 flex items-center justify-center">
+                    <span className="text-4xl font-black text-[#0d1f3c]">{recommendedTool.name[0]}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Text + CTA */}
+              <div className="flex-1 text-center sm:text-left">
+                <h3 className="text-3xl font-extrabold text-white mb-1" style={{ fontFamily: "var(--app-font-display)" }}>
+                  {recommendedTool.name}
+                </h3>
+                <p className="text-white/60 text-sm mb-1 font-medium">
+                  {recommendedTool.pricingStartsAt && `Starting at ${recommendedTool.pricingStartsAt}`}
+                  {recommendedTool.freeTrial && " · Free trial available"}
+                </p>
+                <p className="text-white/70 text-sm mb-5 leading-relaxed max-w-md">
+                  Based on our independent scoring, <strong className="text-white">{recommendedTool.name}</strong> is the best fit for most fencing contractors on price, ease of use, and features.
+                </p>
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3">
+                  <a
+                    href={recommendedTool.affiliateUrl ?? "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#f5a623] hover:bg-[#f5a623]/90 text-[#0d1f3c] font-black px-8 py-3.5 rounded-sm transition-colors text-base"
+                  >
+                    Try {recommendedTool.name} free <ExternalLink className="w-4 h-4" />
+                  </a>
+                  <Link href={`/tool/${recommendedTool.slug}`} className="text-white/40 hover:text-white text-sm font-semibold transition-colors underline underline-offset-2">
+                    Read full review
+                  </Link>
+                </div>
+                <p className="text-white/20 text-xs mt-3 font-medium">
+                  Affiliate link. We may earn a commission at no cost to you.
+                </p>
+              </div>
+            </div>
           </div>
         )}
       </div>
